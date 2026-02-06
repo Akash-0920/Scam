@@ -10,11 +10,11 @@
         body { background: var(--bg); font-family: 'Arial', sans-serif; margin: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
         .hidden { display: none !important; }
 
-        /* Game Screen */
-        #game-box { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 300px; text-align: center; border: 3px solid var(--accent); z-index: 10; }
+        /* Stage 1: Passcode Box */
+        #game-box { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 300px; text-align: center; border: 3px solid var(--accent); z-index: 10; position: relative; }
         input { width: 85%; padding: 12px; margin: 15px 0; border: 2px solid var(--accent); border-radius: 10px; outline: none; text-align: center; font-size: 1rem; }
 
-        /* Stack Section */
+        /* Stage 2: Photo Stack */
         .stack { position: relative; width: 320px; height: 450px; }
         .card { 
             position: absolute; width: 100%; height: 100%; background: white; 
@@ -22,18 +22,18 @@
             padding: 10px; box-sizing: border-box; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s; 
             cursor: pointer; border: 8px solid white;
         }
-        .card img { width: 100%; height: 80%; object-fit: cover; border-radius: 8px; }
-        .caption { margin-top: 15px; font-weight: bold; color: #ff4d6d; font-size: 1.1rem; line-height: 1.2; }
+        .card img { width: 100%; height: 80%; object-fit: cover; border-radius: 8px; background: #eee; }
+        .caption { margin-top: 15px; font-weight: bold; color: #ff4d6d; font-size: 1.1rem; line-height: 1.2; text-align: center;}
 
-        /* Final Ask Section */
+        /* Stage 3: The Ask */
         #ask-section { text-align: center; }
         #ask-section h1 { color: var(--accent); font-size: 1.8rem; margin-bottom: 20px; }
         .btn-wrap { position: relative; height: 150px; width: 100%; }
         button { padding: 15px 35px; font-size: 1.2rem; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
         .yes-btn { background: var(--accent); color: white; box-shadow: 0 5px 15px rgba(255,77,109,0.4); }
-        .no-btn { background: #ddd; position: absolute; left: 50%; transform: translateX(-50%); }
+        .no-btn { background: #ddd; position: absolute; left: 50%; transform: translateX(-50%); z-index: 50;}
         
-        /* Success Screen */
+        /* Stage 4: Victory */
         #victory { display: none; flex-direction: column; align-items: center; text-align: center; }
         .piggy-animation { font-size: 5rem; animation: bounce 1s infinite; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
@@ -43,24 +43,39 @@
 
     <div id="game-box">
         <h3>🔒 Security Protocol</h3>
-        <p>Prove you're my favorite person.<br>Type "I LOVE YOU"</p>
+        <p>Prove you're my favorite person.<br>Type <b>"I LOVE YOU"</b></p>
         <input type="text" id="pass-input" placeholder="Enter Secret Code..." oninput="checkPass()">
     </div>
 
     <div id="main-content" class="hidden">
         <div class="stack" id="stack">
-            <div class="card" onclick="popCard(this)"><img src="code/IMG_0448.jpeg"><div class="caption">And I'm never letting go! 🐽</div></div>
-            <div class="card" onclick="popCard(this)"><img src="code/IMG_0447.jpeg"><div class="caption">You're the best thing ever.</div></div>
-            <div class="card" onclick="popCard(this)"><img src="code/IMG_0446.jpeg"><div class="caption">My favorite view is you. ❤️</div></div>
-            <div class="card" onclick="popCard(this)"><img src="code/IMG_0445.jpeg"><div class="caption">Always smiling with you!</div></div>
-            <div class="card" onclick="popCard(this)"><img src="code/IMG_0444.jpeg"><div class="caption">Click for a surprise...</div></div>
+            <div class="card" onclick="popCard(this)">
+                <img src="IMG_0448.jpeg" onerror="handleImageError(this)">
+                <div class="caption">And I'm never letting go! 🐽</div>
+            </div>
+            <div class="card" onclick="popCard(this)">
+                <img src="IMG_0447.jpeg" onerror="handleImageError(this)">
+                <div class="caption">You're the best thing ever.</div>
+            </div>
+            <div class="card" onclick="popCard(this)">
+                <img src="IMG_0446.jpeg" onerror="handleImageError(this)">
+                <div class="caption">My favorite view is you. ❤️</div>
+            </div>
+            <div class="card" onclick="popCard(this)">
+                <img src="IMG_0445.jpeg" onerror="handleImageError(this)">
+                <div class="caption">Always smiling with you!</div>
+            </div>
+            <div class="card" onclick="popCard(this)">
+                <img src="IMG_0444.jpeg" onerror="handleImageError(this)">
+                <div class="caption">Click for a surprise...</div>
+            </div>
         </div>
 
         <div id="ask-section" class="hidden">
             <h1>Will you be my Valentine? 🌹</h1>
             <div class="btn-wrap">
                 <button class="yes-btn" onclick="celebrate()">YES!</button>
-                <button class="no-btn" id="no-btn" onmouseover="moveNo()">No</button>
+                <button class="no-btn" id="no-btn" onmouseover="moveNo()" onclick="moveNo()">No</button>
             </div>
         </div>
 
@@ -72,6 +87,7 @@
     </div>
 
     <script>
+        // Security logic
         function checkPass() {
             const val = document.getElementById('pass-input').value.toUpperCase();
             if (val === "I LOVE YOU") {
@@ -80,9 +96,20 @@
             }
         }
 
+        // Image Fallback Logic (Handles JPG vs jpeg issues)
+        function handleImageError(img) {
+            const currentSrc = img.src;
+            if (currentSrc.endsWith(".jpeg")) {
+                img.src = currentSrc.replace(".jpeg", ".JPG");
+            } else if (currentSrc.endsWith(".JPG")) {
+                img.src = "https://via.placeholder.com/300x400?text=Check+Filename+Exact";
+            }
+        }
+
+        // Card Swiping
         let popped = 0;
         function popCard(card) {
-            card.style.transform = `translate(${Math.random() * 400 - 200}px, -600px) rotate(${Math.random() * 90 - 45}deg)`;
+            card.style.transform = `translate(${Math.random() * 500 + 300}px, -600px) rotate(45deg)`;
             card.style.opacity = "0";
             popped++;
             if (popped === 5) {
@@ -93,6 +120,7 @@
             }
         }
 
+        // Prank "No" Button
         function moveNo() {
             const btn = document.getElementById('no-btn');
             const x = Math.random() * (window.innerWidth - 150);
@@ -100,9 +128,10 @@
             btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
-            btn.innerText = "Wrong button! 😂";
+            btn.innerText = "Error 404 😂";
         }
 
+        // Final Celebration with Piggy Confetti
         function celebrate() {
             document.getElementById('ask-section').classList.add('hidden');
             document.getElementById('victory').style.display = 'flex';
@@ -111,7 +140,7 @@
             const pig = confetti.shapeFromText({ text: '🐷', scalar });
             const heart = confetti.shapeFromText({ text: '💖', scalar });
 
-            const defaults = { spread: 360, ticks: 100, gravity: 0.5, decay: 0.94, startVelocity: 30, shapes: [pig, heart, 'circle'], colors: ['#ff4d6d', '#ffb3c1'] };
+            const defaults = { spread: 360, ticks: 100, gravity: 0.6, decay: 0.94, startVelocity: 30, shapes: [pig, heart, 'circle'], colors: ['#ff4d6d', '#ffb3c1'] };
 
             function shoot() {
                 confetti({ ...defaults, particleCount: 40, scalar: 1.2 });
@@ -119,8 +148,8 @@
             }
 
             setTimeout(shoot, 0);
-            setTimeout(shoot, 200);
-            setTimeout(shoot, 400);
+            setTimeout(shoot, 300);
+            setTimeout(shoot, 600);
         }
     </script>
 </body>
