@@ -21,6 +21,7 @@
             background: rgba(255, 255, 255, 0.95); border-radius: 30px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.15);
             border: 2px solid white;
+            z-index: 10;
         }
 
         .image-frame {
@@ -39,45 +40,32 @@
             background: var(--accent); color: white; border: none;
             padding: 18px 45px; border-radius: 50px; font-size: 1.1rem;
             cursor: pointer; transition: all 0.5s; box-shadow: 0 10px 20px rgba(255,77,109,0.3);
-            letter-spacing: 1px;
+            letter-spacing: 1px; font-weight: bold;
         }
         .btn-dramatic:hover { transform: scale(1.05) translateY(-2px); background: #ff3355; }
 
         .no-btn { background: #95a5a6; position: absolute; }
 
-        .proposal-text { font-size: 2.2rem; color: #ff3355; margin-bottom: 20px; }
-
         .final-request-box {
             padding: 25px; border-radius: 20px; background: #fff0f3;
             border: 2px dashed var(--accent); margin-top: 25px;
-            animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-
-        .fade-in { animation: fadeIn 2.5s forwards; }
+        .fade-in { animation: fadeIn 2s forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;">
-        <iframe width="560" height="315" 
-            src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" 
-            allow="autoplay">
-        </iframe>
-    </div>
+    <div id="music-container" style="position: absolute; left: -9999px;"></div>
 
     <div id="lock-screen" class="container">
         <h1 style="color:var(--accent); font-size: 2.5rem;">🔒 Unlock My Heart</h1>
-        <p style="font-size: 1.1rem; margin-bottom: 30px;">Type our secret phrase to begin...</p>
+        <p style="font-size: 1.1rem; margin-bottom: 30px;">Our journey begins with our favorite phrase...</p>
         <input type="text" id="pass-input" placeholder="Type 'I LOVE YOU'..." 
                style="width: 85%; padding: 18px; border: 2px solid var(--accent); border-radius: 20px; text-align: center; font-size: 1.2rem;" 
                oninput="checkPass()">
+        <p style="font-size: 0.8rem; color: #888; margin-top: 15px;">(Type the password to start the music ✨)</p>
     </div>
 
     <div id="story-screen" class="container hidden">
@@ -85,55 +73,65 @@
             <img id="display-img" src="IMG_0444.jpeg">
         </div>
         <div class="description" id="img-desc">I looked at this photo and realized... my world was changing for the better.</div>
-        <button class="btn-dramatic" id="next-btn" onclick="nextStep()">Tell me more... ✨</button>
+        <button class="btn-dramatic" id="next-btn" onclick="nextStep()">Continue the story... ✨</button>
     </div>
 
     <div id="ask-screen" class="container hidden">
         <h1 class="fade-in" style="color: var(--accent); font-size: 1.5rem;">My Heart, My Soul...</h1>
-        <p class="fade-in" style="font-size: 1.3rem;">I don't just want a Valentine. I want a lifetime with you.</p>
-        <h2 class="proposal-text fade-in">Will you be my Dalenvine? 🌹</h2>
+        <p class="fade-in" style="font-size: 1.3rem;">Every memory we've shared led me to this moment.</p>
+        <h2 class="fade-in" style="color: #ff3355; font-size: 2.2rem; margin-bottom: 20px;">Will you be my Dalenvine? 🌹</h2>
         
         <div style="height: 150px; position: relative; margin-top: 40px;">
-            <button class="btn-dramatic" style="font-size: 1.6rem; background: #27ae60; width: 80%;" onclick="yes()">YES, A THOUSAND TIMES!</button>
+            <button class="btn-dramatic" style="font-size: 1.6rem; background: #27ae60; width: 85%;" onclick="yes()">YES, FOREVER! 💖</button>
             <button class="btn-dramatic no-btn" id="no-btn" onmouseover="moveNo()">No</button>
         </div>
     </div>
 
     <div id="final-screen" class="container hidden">
-        <h1 style="color: var(--accent); font-size: 2.8rem;">Forever Yours. ❤️</h1>
-        <p style="font-size: 1.2rem;">My heart is officially your property now.</p>
+        <h1 style="color: var(--accent); font-size: 2.5rem;">I'm Yours! ❤️</h1>
+        <p style="font-size: 1.2rem;">You've made me the happiest person today.</p>
         
         <div class="final-request-box fade-in">
-            <h3 style="margin-top: 0;">Wait! Just one thing... 🥺</h3>
-            <p>I am missing you way too much right now. Can you please <b>send me 2-3 of your favorite photos</b> you took today?</p>
+            <h3 style="margin-top: 0;">A Little Surprise? 🥺</h3>
+            <p>I want to see your beautiful smile right now. Can you <b>send me 2-3 of your favorite photos</b> from today?</p>
             <hr style="border: 0; border-top: 1px solid var(--accent); opacity: 0.3; margin: 20px 0;">
             <p style="font-weight: bold; font-size: 1.3rem;">And then... can we have a Video Call? 🎥</p>
-            <p>I want to see your smile and celebrate this moment together.</p>
+            <p>I'm waiting to celebrate this with you!</p>
         </div>
-        
-        <p style="margin-top: 30px; font-style: italic; color: #777;">I'm waiting for your text... 🐽💖</p>
     </div>
 
     <script>
+        // Use an array for your images and descriptions
         const story = [
             { img: "IMG_0444.jpeg", text: "Every time I look at this, I see a future I never knew I wanted until I met you. ✨" },
             { img: "IMG_0461.jpeg", text: "You have this way of making everything feel beautiful, just by being in it." },
             { img: "IMG_0462.jpeg", text: "That smile in this photo? It's the reason I believe in magic. ❤️" },
             { img: "IMG_0514.jpeg", text: "I looked at this and thought: 'This is it. This is the person I want by my side.'" },
             { img: "IMG_0541.jpeg", text: "Through every laugh and every tear, I promise to be your safest place." },
-            { img: "IMG_0697.jpeg", text: "I have one final memory to make with you today... and it starts with a question." }
+            { img: "IMG_0697.jpeg", text: "Every moment has led to this... and I have one very special question for you." }
         ];
 
         let currentStep = 0;
+        let musicStarted = false;
+
+        function startMusic() {
+            if (!musicStarted) {
+                // Creates the YouTube iframe after user interaction to bypass browser blocks
+                const container = document.getElementById('music-container');
+                container.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" allow="autoplay"></iframe>`;
+                musicStarted = true;
+            }
+        }
 
         function checkPass() {
-            if (document.getElementById('pass-input').value.toUpperCase() === "I LOVE YOU") {
-                document.getElementById('lock-screen').classList.add('fade-out');
+            const val = document.getElementById('pass-input').value.toUpperCase();
+            if (val === "I LOVE YOU") {
+                startMusic(); // Triggers music on the interaction of typing the full password
                 setTimeout(() => {
                     document.getElementById('lock-screen').classList.add('hidden');
                     document.getElementById('story-screen').classList.remove('hidden');
                     document.getElementById('story-screen').classList.add('fade-in');
-                }, 500);
+                }, 400);
             }
         }
 
@@ -141,7 +139,8 @@
             currentStep++;
             const img = document.getElementById('display-img');
             const desc = document.getElementById('img-desc');
-            
+            const nextBtn = document.getElementById('next-btn');
+
             if (currentStep < story.length) {
                 img.style.opacity = '0';
                 desc.style.opacity = '0';
@@ -153,7 +152,7 @@
                     desc.style.opacity = '1';
                     
                     if (currentStep === story.length - 1) {
-                        document.getElementById('next-btn').innerText = "Ask Me... ❤️";
+                        nextBtn.innerText = "The Final Question... ❤️";
                     }
                 }, 1000);
             } else {
@@ -166,7 +165,7 @@
             const btn = document.getElementById('no-btn');
             btn.style.left = Math.random() * 70 + '%';
             btn.style.top = Math.random() * 70 + '%';
-            btn.innerText = "You can't click this! 😂";
+            btn.innerText = "Error 404! 😂";
         }
 
         function yes() {
@@ -174,11 +173,9 @@
             document.getElementById('final-screen').classList.remove('hidden');
             
             const end = Date.now() + (10 * 1000);
-            const colors = ['#ff4d6d', '#ffffff', '#ffb3c1'];
-
             (function frame() {
-                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
-                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff'] });
                 if (Date.now() < end) requestAnimationFrame(frame);
             }());
         }
