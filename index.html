@@ -1,228 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Valentine</title>
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #ff9a9e, #fad0c4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Secret Message 🔒</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --accent: #ff4d6d; --bg: #fff0f3; }
+        body { background: var(--bg); font-family: 'Comic Sans MS', cursive; margin: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .hidden { display: none !important; }
 
-.container {
-  width: 90%;
-  max-width: 720px;
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  text-align: center;
-}
+        /* Game Screen */
+        #game-box { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 300px; text-align: center; }
+        input { width: 80%; padding: 10px; margin: 15px 0; border: 2px solid var(--accent); border-radius: 10px; outline: none; }
 
-.slideshow {
-  position: relative;
-  width: 100%;
-  height: 320px;
-  overflow: hidden;
-  border-radius: 15px;
-}
+        /* Stack */
+        .stack { position: relative; width: 320px; height: 450px; }
+        .card { 
+            position: absolute; width: 100%; height: 100%; background: white; 
+            border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+            padding: 10px; box-sizing: border-box; transition: transform 0.6s ease, opacity 0.4s; 
+            cursor: pointer; border: 10px solid white;
+        }
+        .card img { width: 100%; height: 80%; object-fit: cover; border-radius: 5px; }
+        .caption { margin-top: 15px; font-weight: bold; color: #555; }
 
-.slide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-
-.slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.slide.active { opacity: 1; }
-
-.stack-container {
-  position: relative;
-  width: 260px;
-  height: 260px;
-  margin: 30px auto;
-}
-
-.stack-container img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 15px;
-  transition: transform 1s, opacity 1s;
-}
-
-textarea {
-  width: 100%;
-  height: 70px;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  background: #ff4b6e;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.intro-screen, .main-content, .game-screen, .final-screen {
-  display: none;
-}
-
-.confetti {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  top: 0;
-  animation: fall linear forwards;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(100vh) rotate(720deg);
-    opacity: 0;
-  }
-}
-
-</style>
+        /* Valentine Section */
+        #ask-section h1 { color: var(--accent); font-size: 2rem; }
+        .btn-wrap { position: relative; height: 120px; margin-top: 20px; }
+        button { padding: 15px 35px; font-size: 1.2rem; border: none; border-radius: 50px; cursor: pointer; }
+        .yes-btn { background: var(--accent); color: white; box-shadow: 0 5px 15px rgba(255,77,109,0.4); }
+        .no-btn { background: #ddd; position: absolute; left: 50%; transform: translateX(-50%); }
+        
+        #victory { display: none; flex-direction: column; align-items: center; }
+        .emoji-rain { font-size: 3rem; }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+    <div id="game-box">
+        <h3>🔒 Security Check</h3>
+        <p id="hint">Type "I LOVE YOU" to unlock</p>
+        <input type="text" id="pass-input" placeholder="Type here..." oninput="checkPass()">
+        <p id="joke-msg" style="font-size: 0.8rem; color: var(--accent);"></p>
+    </div>
 
-<div class="intro-screen" id="introScreen" style="display:block">
-<h1>Hey ❤️</h1>
-<p>I made something special for you...</p>
-<button onclick="startExperience()">Start</button>
-</div>
+    <div id="main-content" class="hidden">
+        <div class="stack" id="stack">
+            <div class="card" onclick="popCard(this)"><img src="code/photo5.jpg"><div class="caption">The best is yet to come...</div></div>
+            <div class="card" onclick="popCard(this)"><img src="code/photo4.jpg"><div class="caption">I'm so lucky to have you.</div></div>
+            <div class="card" onclick="popCard(this)"><img src="code/photo3.jpg"><div class="caption">Thinking of you makes me smile.</div></div>
+            <div class="card" onclick="popCard(this)"><img src="code/photo2.jpg"><div class="caption">Remember this memory? ❤️</div></div>
+            <div class="card" onclick="popCard(this)"><img src="code/photo1.jpg"><div class="caption">Click through my favorite moments...</div></div>
+        </div>
 
-<div class="main-content" id="mainContent">
-<h1>Our Memories ❤️</h1>
+        <div id="ask-section" class="hidden">
+            <h1>Will you be my Valentine? 🌹</h1>
+            <div class="btn-wrap">
+                <button class="yes-btn" onclick="celebrate()">YES!</button>
+                <button class="no-btn" id="no-btn" onmouseover="moveNo()">No</button>
+            </div>
+        </div>
 
-<div class="slideshow">
-<div class="slide active"><img src="code/photo1.jpg"></div>
-<div class="slide"><img src="code/photo2.jpg"></div>
-<div class="slide"><img src="code/photo3.jpg"></div>
-<div class="slide"><img src="code/photo4.jpg"></div>
-<div class="slide"><img src="code/photo5.jpg"></div>
-</div>
+        <div id="victory">
+            <div class="emoji-rain">🥳🎉💖✨</div>
+            <h1>YAY! YOU'RE MINE! ❤️</h1>
+            <p>I love you so much! 😍</p>
+            <div class="emoji-rain">🌈🥂🔥🎁</div>
+        </div>
+    </div>
 
-<h2>Moments I Love</h2>
+    <script>
+        // Stage 1: Passcode Logic
+        function checkPass() {
+            const val = document.getElementById('pass-input').value.toUpperCase();
+            const msg = document.getElementById('joke-msg');
+            
+            if (val === "I LOVE") { msg.innerText = "Keep going... don't be shy!"; }
+            if (val === "I LOVE YOU") {
+                document.getElementById('game-box').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+            }
+        }
 
-<div class="stack-container" id="stackContainer">
-<img src="code/photo1.jpg">
-<img src="code/photo2.jpg">
-<img src="code/photo3.jpg">
-<img src="code/photo4.jpg">
-<img src="code/photo5.jpg">
-</div>
+        // Stage 2: Pop Cards
+        let popped = 0;
+        function popCard(card) {
+            card.style.transform = `translate(${Math.random() * 400 + 200}px, -200px) rotate(45deg)`;
+            card.style.opacity = "0";
+            popped++;
+            if (popped === 5) {
+                setTimeout(() => {
+                    document.getElementById('stack').classList.add('hidden');
+                    document.getElementById('ask-section').classList.remove('hidden');
+                }, 600);
+            }
+        }
 
-<textarea placeholder="Write something for me ❤️"></textarea>
+        // Stage 3: The Prank No Button
+        function moveNo() {
+            const btn = document.getElementById('no-btn');
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+            btn.innerText = "Nice try! 😂";
+        }
 
-<button onclick="showGame()">Next</button>
-</div>
+        // Stage 4: Celebration
+        function celebrate() {
+            document.getElementById('ask-section').classList.add('hidden');
+            document.getElementById('victory').style.display = 'flex';
 
-<div class="game-screen" id="gameScreen">
-<h2>Fun Love Quiz 😄</h2>
-<p>Where did we first meet?</p>
-<input id="quiz1" placeholder="Type answer">
-<button onclick="quizStep2()">Next</button>
+            // Confetti Explosion
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-<div id="quiz2" style="display:none">
-<p>Who loves more? 😜</p>
-<input id="quiz2input" placeholder="Type name">
-<button onclick="finishQuiz()">Submit</button>
-</div>
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
 
-<p id="quizResult"></p>
-</div>
-
-<div class="final-screen" id="finalScreen">
-<h2>Will You Be My Valentine? ❤️</h2>
-<button onclick="yesClicked()">Yes</button>
-<button onclick="alert('I will keep trying 😄')">No</button>
-</div>
-
-</div>
-
-<script>
-
-function startExperience(){
-introScreen.style.display='none';
-mainContent.style.display='block';
-}
-
-let slides=document.querySelectorAll('.slide');
-let currentSlide=0;
-
-setInterval(()=>{
-slides[currentSlide].classList.remove('active');
-currentSlide=(currentSlide+1)%slides.length;
-slides[currentSlide].classList.add('active');
-},3000);
-
-let stackImages=document.querySelectorAll('#stackContainer img');
-let stackIndex=0;
-
-setInterval(()=>{
-stackImages.forEach((img,i)=>{
-img.style.transform=`translateY(${(i-stackIndex)*10}px) scale(${1-(i-stackIndex)*0.05})`;
-img.style.opacity=(i===stackIndex)?1:0.5;
-});
-stackIndex=(stackIndex+1)%stackImages.length;
-},2000);
-
-function showGame(){
-mainContent.style.display='none';
-gameScreen.style.display='block';
-}
-
-function quizStep2(){
-document.getElementById('quiz2').style.display='block';
-}
-
-function finishQuiz(){
-gameScreen.style.display='none';
-finalScreen.style.display='block';
-}
-
-function yesClicked(){
-alert('Yayyyy 🎉🥳❤️');
-launchConfetti();
-}
-
-function launchConfetti(){
-for(let i=0;i<120;i++){
-let conf=document.createElement('div');
-conf.classList.add('confetti');
-conf.style.left=Math.random()*100+'vw';
-conf.style.background=['#ff4b6e','#ffd700','#ff69b4','#ffffff'][Math.floor(Math.random()*4)];
-conf.style.animationDuration=(Math.random()*3+2)+'s';
-document.body.appendChild(conf);
-setTimeout(()=>conf.remove(),5000);
-}
-}
-
-</script>
-
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) { return clearInterval(interval); }
+                var particleCount = 50 * (timeLeft / duration);
+                // Heart Confetti
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
 </body>
 </html>
