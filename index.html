@@ -7,51 +7,53 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root { --accent: #ff4d6d; --bg: #fff0f3; }
-        body { background: var(--bg); font-family: 'Comic Sans MS', cursive; margin: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        body { background: var(--bg); font-family: 'Arial', sans-serif; margin: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
         .hidden { display: none !important; }
 
         /* Game Screen */
-        #game-box { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 300px; text-align: center; }
-        input { width: 80%; padding: 10px; margin: 15px 0; border: 2px solid var(--accent); border-radius: 10px; outline: none; }
+        #game-box { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 300px; text-align: center; border: 3px solid var(--accent); z-index: 10; }
+        input { width: 85%; padding: 12px; margin: 15px 0; border: 2px solid var(--accent); border-radius: 10px; outline: none; text-align: center; font-size: 1rem; }
 
-        /* Stack */
+        /* Stack Section */
         .stack { position: relative; width: 320px; height: 450px; }
         .card { 
             position: absolute; width: 100%; height: 100%; background: white; 
             border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
-            padding: 10px; box-sizing: border-box; transition: transform 0.6s ease, opacity 0.4s; 
-            cursor: pointer; border: 10px solid white;
+            padding: 10px; box-sizing: border-box; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s; 
+            cursor: pointer; border: 8px solid white;
         }
-        .card img { width: 100%; height: 80%; object-fit: cover; border-radius: 5px; }
-        .caption { margin-top: 15px; font-weight: bold; color: #555; }
+        .card img { width: 100%; height: 80%; object-fit: cover; border-radius: 8px; }
+        .caption { margin-top: 15px; font-weight: bold; color: #ff4d6d; font-size: 1.1rem; line-height: 1.2; }
 
-        /* Valentine Section */
-        #ask-section h1 { color: var(--accent); font-size: 2rem; }
-        .btn-wrap { position: relative; height: 120px; margin-top: 20px; }
-        button { padding: 15px 35px; font-size: 1.2rem; border: none; border-radius: 50px; cursor: pointer; }
+        /* Final Ask Section */
+        #ask-section { text-align: center; }
+        #ask-section h1 { color: var(--accent); font-size: 1.8rem; margin-bottom: 20px; }
+        .btn-wrap { position: relative; height: 150px; width: 100%; }
+        button { padding: 15px 35px; font-size: 1.2rem; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
         .yes-btn { background: var(--accent); color: white; box-shadow: 0 5px 15px rgba(255,77,109,0.4); }
         .no-btn { background: #ddd; position: absolute; left: 50%; transform: translateX(-50%); }
         
-        #victory { display: none; flex-direction: column; align-items: center; }
-        .emoji-rain { font-size: 3rem; }
+        /* Success Screen */
+        #victory { display: none; flex-direction: column; align-items: center; text-align: center; }
+        .piggy-animation { font-size: 5rem; animation: bounce 1s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
     </style>
 </head>
 <body>
 
     <div id="game-box">
-        <h3>🔒 Security Check</h3>
-        <p id="hint">Type "I LOVE YOU" to unlock</p>
-        <input type="text" id="pass-input" placeholder="Type here..." oninput="checkPass()">
-        <p id="joke-msg" style="font-size: 0.8rem; color: var(--accent);"></p>
+        <h3>🔒 Security Protocol</h3>
+        <p>Prove you're my favorite person.<br>Type "I LOVE YOU"</p>
+        <input type="text" id="pass-input" placeholder="Enter Secret Code..." oninput="checkPass()">
     </div>
 
     <div id="main-content" class="hidden">
         <div class="stack" id="stack">
-            <div class="card" onclick="popCard(this)"><img src="code/photo5.jpg"><div class="caption">The best is yet to come...</div></div>
-            <div class="card" onclick="popCard(this)"><img src="code/photo4.jpg"><div class="caption">I'm so lucky to have you.</div></div>
-            <div class="card" onclick="popCard(this)"><img src="code/photo3.jpg"><div class="caption">Thinking of you makes me smile.</div></div>
-            <div class="card" onclick="popCard(this)"><img src="code/photo2.jpg"><div class="caption">Remember this memory? ❤️</div></div>
-            <div class="card" onclick="popCard(this)"><img src="code/photo1.jpg"><div class="caption">Click through my favorite moments...</div></div>
+            <div class="card" onclick="popCard(this)"><img src="code/IMG_0448.jpeg"><div class="caption">And I'm never letting go! 🐽</div></div>
+            <div class="card" onclick="popCard(this)"><img src="code/IMG_0447.jpeg"><div class="caption">You're the best thing ever.</div></div>
+            <div class="card" onclick="popCard(this)"><img src="code/IMG_0446.jpeg"><div class="caption">My favorite view is you. ❤️</div></div>
+            <div class="card" onclick="popCard(this)"><img src="code/IMG_0445.jpeg"><div class="caption">Always smiling with you!</div></div>
+            <div class="card" onclick="popCard(this)"><img src="code/IMG_0444.jpeg"><div class="caption">Click for a surprise...</div></div>
         </div>
 
         <div id="ask-section" class="hidden">
@@ -63,30 +65,24 @@
         </div>
 
         <div id="victory">
-            <div class="emoji-rain">🥳🎉💖✨</div>
-            <h1>YAY! YOU'RE MINE! ❤️</h1>
-            <p>I love you so much! 😍</p>
-            <div class="emoji-rain">🌈🥂🔥🎁</div>
+            <div class="piggy-animation">🐷🐽🐷</div>
+            <h1 style="color: var(--accent);">YAY! 🥳</h1>
+            <p style="font-size: 1.5rem;">I love you my little piggy! 💖</p>
         </div>
     </div>
 
     <script>
-        // Stage 1: Passcode Logic
         function checkPass() {
             const val = document.getElementById('pass-input').value.toUpperCase();
-            const msg = document.getElementById('joke-msg');
-            
-            if (val === "I LOVE") { msg.innerText = "Keep going... don't be shy!"; }
             if (val === "I LOVE YOU") {
                 document.getElementById('game-box').classList.add('hidden');
                 document.getElementById('main-content').classList.remove('hidden');
             }
         }
 
-        // Stage 2: Pop Cards
         let popped = 0;
         function popCard(card) {
-            card.style.transform = `translate(${Math.random() * 400 + 200}px, -200px) rotate(45deg)`;
+            card.style.transform = `translate(${Math.random() * 400 - 200}px, -600px) rotate(${Math.random() * 90 - 45}deg)`;
             card.style.opacity = "0";
             popped++;
             if (popped === 5) {
@@ -97,36 +93,34 @@
             }
         }
 
-        // Stage 3: The Prank No Button
         function moveNo() {
             const btn = document.getElementById('no-btn');
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
+            const x = Math.random() * (window.innerWidth - 150);
+            const y = Math.random() * (window.innerHeight - 150);
+            btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
-            btn.innerText = "Nice try! 😂";
+            btn.innerText = "Wrong button! 😂";
         }
 
-        // Stage 4: Celebration
         function celebrate() {
             document.getElementById('ask-section').classList.add('hidden');
             document.getElementById('victory').style.display = 'flex';
 
-            // Confetti Explosion
-            var duration = 5 * 1000;
-            var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            const scalar = 3;
+            const pig = confetti.shapeFromText({ text: '🐷', scalar });
+            const heart = confetti.shapeFromText({ text: '💖', scalar });
 
-            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+            const defaults = { spread: 360, ticks: 100, gravity: 0.5, decay: 0.94, startVelocity: 30, shapes: [pig, heart, 'circle'], colors: ['#ff4d6d', '#ffb3c1'] };
 
-            var interval = setInterval(function() {
-                var timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) { return clearInterval(interval); }
-                var particleCount = 50 * (timeLeft / duration);
-                // Heart Confetti
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-            }, 250);
+            function shoot() {
+                confetti({ ...defaults, particleCount: 40, scalar: 1.2 });
+                confetti({ ...defaults, particleCount: 20, scalar: 2 });
+            }
+
+            setTimeout(shoot, 0);
+            setTimeout(shoot, 200);
+            setTimeout(shoot, 400);
         }
     </script>
 </body>
