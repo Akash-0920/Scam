@@ -1,164 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top Secret 🔒</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <style>
-        :root { --accent: #ff4d6d; --glow: #ffd0d0; }
-        
-        body { 
-            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
-            font-family: 'Arial', sans-serif; overflow: hidden;
-            background: radial-gradient(circle, #fff0f3 0%, #ffb3c1 100%);
-            transition: background 0.5s;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top Secret 🔒</title>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+:root { --accent: #ff4d6d; --glow: #ffd0d0; }
 
-        .glow-active {
-            animation: screenGlow 1s infinite alternate;
-        }
-        @keyframes screenGlow {
-            from { box-shadow: inset 0 0 50px var(--accent); }
-            to { box-shadow: inset 0 0 150px #ff00ea; }
-        }
+body { 
+    margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
+    font-family: 'Arial', sans-serif; overflow: hidden;
+    background: radial-gradient(circle, #fff0f3 0%, #ffb3c1 100%);
+    transition: background 0.5s;
+}
 
-        .hidden { display: none !important; }
+.glow-active {
+    animation: screenGlow 1s infinite alternate;
+}
 
-        /* Smooth Image Slider Styles */
-        .stack-container { 
-            position: relative; 
-            width: 320px; 
-            height: 450px; 
-            perspective: 1000px;
-        }
-        .card { 
-            position: absolute; width: 100%; height: 100%; background: white; 
-            border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
-            padding: 12px; box-sizing: border-box; 
-            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out; 
-            cursor: pointer; border: 8px solid white;
-            opacity: 0;
-            transform: scale(0.95);
-            pointer-events: none;
-        }
-        .card.active {
-            opacity: 1;
-            transform: scale(1);
-            pointer-events: auto;
-            z-index: 10;
-        }
-        .card img { width: 100%; height: 80%; object-fit: cover; border-radius: 12px; }
-        .caption { margin-top: 15px; color: var(--accent); font-weight: bold; font-size: 1.1rem; text-align: center; }
+@keyframes screenGlow {
+    from { box-shadow: inset 0 0 50px var(--accent); }
+    to { box-shadow: inset 0 0 150px #ff00ea; }
+}
 
-        .btn-wrap { position: relative; height: 160px; margin-top: 20px; width: 300px;}
-        button { 
-            padding: 18px 45px; font-size: 1.3rem; border: none; border-radius: 50px; 
-            cursor: pointer; font-weight: bold; transition: 0.2s;
-        }
-        .yes-btn { background: var(--accent); color: white; box-shadow: 0 5px 20px rgba(255,77,109,0.5); z-index: 100; }
-        .no-btn { background: #eee; color: #999; position: absolute; left: 50%; transform: translateX(-50%); }
+.hidden { display: none !important; }
 
-        #victory { text-align: center; display: none; flex-direction: column; align-items: center; }
-        .celebration-icon { font-size: 6rem; margin-bottom: 20px; }
-    </style>
+.stack-container { position: relative; width: 320px; height: 450px; }
+
+.card { 
+    position: absolute; width: 100%; height: 100%; background: white; 
+    border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
+    padding: 12px; box-sizing: border-box; 
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.3, 1.2), opacity 0.8s ease;
+    cursor: pointer; border: 8px solid white;
+}
+
+.card img { 
+    width: 100%; height: 80%; object-fit: cover; border-radius: 12px; 
+    transition: transform 1.2s ease, filter 1s ease;
+}
+
+.card:hover img { transform: scale(1.05); filter: brightness(1.05); }
+
+.caption { margin-top: 15px; color: var(--accent); font-weight: bold; font-size: 1.1rem; text-align: center; }
+
+.btn-wrap { position: relative; height: 160px; margin-top: 20px; width: 300px;}
+
+button { 
+    padding: 18px 45px; font-size: 1.3rem; border: none; border-radius: 50px; 
+    cursor: pointer; font-weight: bold; transition: 0.2s;
+}
+
+.yes-btn { background: var(--accent); color: white; box-shadow: 0 5px 20px rgba(255,77,109,0.5); z-index: 100; }
+.no-btn { background: #eee; color: #999; position: absolute; left: 50%; transform: translateX(-50%); }
+
+#victory { text-align: center; display: none; flex-direction: column; align-items: center; }
+
+.sparkle { position: fixed; pointer-events: none; animation: fly 1s forwards; font-size: 20px; }
+
+@keyframes fly { to { transform: translate(var(--tw), var(--th)); opacity: 0; } }
+</style>
 </head>
 <body id="body-bg">
 
-    <iframe id="bgMusic" width="0" height="0" src="https://www.youtube.com/embed/20eNVXkeb3M?autoplay=1&loop=1&playlist=20eNVXkeb3M" frameborder="0" allow="autoplay"></iframe>
+<!-- Hidden YouTube Music Autoplay -->
+<iframe width="0" height="0" src="https://www.youtube.com/embed/20eNVXkeb3M?autoplay=1&loop=1&playlist=20eNVXkeb3M" frameborder="0" allow="autoplay"></iframe>
 
-    <div id="game-box" style="background:white; padding:40px; border-radius:30px; border:3px dashed var(--accent); text-align:center; z-index: 100;">
-        <h1 style="color:var(--accent)">🔒 Private Access</h1>
-        <p>Password: <b>I LOVE YOU</b></p>
-        <input type="text" id="pass-input" placeholder="Type here..." 
-               style="width: 90%; padding: 15px; border: 2px solid var(--accent); border-radius: 15px; text-align: center;" 
-               oninput="checkPass()">
-    </div>
+<div id="game-box" style="background:white; padding:40px; border-radius:30px; border:3px dashed var(--accent); text-align:center;">
+<h1 style="color:var(--accent)">🔒 Private Access</h1>
+<p>Password: <b>I LOVE YOU</b></p>
+<input type="text" id="pass-input" placeholder="Type here..." 
+style="width: 90%; padding: 15px; border: 2px solid var(--accent); border-radius: 15px; text-align: center;" 
+oninput="checkPass()">
+</div>
 
-    <div id="main-content" class="hidden">
-        <div class="stack-container" id="stack">
-            <div class="card active" onclick="nextCard()"><img src="IMG_0444.jpeg"><div class="caption">Click to reveal my secret... ✨</div></div>
-            <div class="card" onclick="nextCard()"><img src="IMG_0461.jpeg"><div class="caption">Remember this?</div></div>
-            <div class="card" onclick="nextCard()"><img src="IMG_0462.jpeg"><div class="caption">The prettiest face ever.</div></div>
-            <div class="card" onclick="nextCard()"><img src="IMG_0514.jpeg"><div class="caption">Look at us! ❤️</div></div>
-            <div class="card" onclick="nextCard()"><img src="IMG_0541.jpeg"><div class="caption">You're my favorite human!</div></div>
-            <div class="card" onclick="nextCard()"><img src="IMG_0697.jpeg"><div class="caption">Forever begins here... ❤️</div></div>
-        </div>
+<div id="main-content" class="hidden">
 
-        <div id="ask-section" class="hidden" style="text-align:center;">
-            <h1 style="color: var(--accent); font-size: 2.5rem; text-shadow: 2px 2px white;">Will you be my Dalenvine? 🌹</h1>
-            <div class="btn-wrap">
-                <button class="yes-btn" onclick="celebrate()">YES!</button>
-                <button class="no-btn" id="no-btn" onmouseover="moveNo()">No</button>
-            </div>
-        </div>
+<div class="stack-container" id="stack">
+<div class="card" onclick="popCard(this)"><img src="IMG_0697.jpeg"><div class="caption">Forever begins here ❤️</div></div>
+<div class="card" onclick="popCard(this)"><img src="IMG_0541.jpeg"><div class="caption">You're my favorite human!</div></div>
+<div class="card" onclick="popCard(this)"><img src="IMG_0514.jpeg"><div class="caption">Look at us! ❤️</div></div>
+<div class="card" onclick="popCard(this)"><img src="IMG_0462.jpeg"><div class="caption">The prettiest face ever.</div></div>
+<div class="card" onclick="popCard(this)"><img src="IMG_0461.jpeg"><div class="caption">Remember this?</div></div>
+<div class="card" onclick="popCard(this)"><img src="IMG_0444.jpeg"><div class="caption">Click to reveal my secret... ✨</div></div>
+</div>
 
-        <div id="victory">
-            <div class="celebration-icon">✨❤️✨</div>
-            <h1 style="color: var(--accent); font-size: 3rem;">I love you more than words can say!</h1>
-            <p style="font-size: 1.5rem; color: #555;">You've made me the happiest person. 💖</p>
-        </div>
-    </div>
+<div id="ask-section" class="hidden" style="text-align:center;">
+<h1 style="color: var(--accent); font-size: 2.5rem; text-shadow: 2px 2px white;">Will you be my Dalenvine? 🌹</h1>
+<div class="btn-wrap">
+<button class="yes-btn" onclick="celebrate()">YES!</button>
+<button class="no-btn" id="no-btn" onmouseover="moveNo(event)">No</button>
+</div>
+</div>
 
-    <script>
-        function checkPass() {
-            if (document.getElementById('pass-input').value.toUpperCase() === "I LOVE YOU") {
-                document.getElementById('game-box').classList.add('hidden');
-                document.getElementById('main-content').classList.remove('hidden');
-            }
-        }
+<div id="victory">
+<h1 style="color: var(--accent); font-size: 3rem;">I Love You So Much ❤️🥳✨</h1>
+<p style="font-size: 1.5rem;">Forever celebration mode ON 💖</p>
+</div>
 
-        let currentCard = 0;
-        const cards = document.querySelectorAll('.card');
+</div>
 
-        function nextCard() {
-            cards[currentCard].classList.remove('active');
-            currentCard++;
+<script>
+function checkPass() {
+if (document.getElementById('pass-input').value.toUpperCase() === "I LOVE YOU") {
+document.getElementById('game-box').classList.add('hidden');
+document.getElementById('main-content').classList.remove('hidden');
+}
+}
 
-            if (currentCard < cards.length) {
-                cards[currentCard].classList.add('active');
-            } else {
-                // Transition to Ask Section
-                document.getElementById('stack').classList.add('hidden');
-                document.getElementById('ask-section').classList.remove('hidden');
-            }
-        }
+let popped = 0;
+function popCard(card) {
+card.style.transform = `translate(${Math.random() * 600 - 300}px, -900px) rotate(90deg)`;
+card.style.opacity = "0";
+popped++;
+if (popped === 6) {
+setTimeout(() => {
+document.getElementById('stack').classList.add('hidden');
+document.getElementById('ask-section').classList.remove('hidden');
+}, 600);
+}
+}
 
-        function moveNo() {
-            const btn = document.getElementById('no-btn');
-            btn.style.position = 'fixed';
-            btn.style.left = Math.random() * 80 + '%';
-            btn.style.top = Math.random() * 80 + '%';
-            btn.innerText = "Try Harder! 😂";
-        }
+function moveNo(e) {
+const btn = document.getElementById('no-btn');
+btn.style.position = 'fixed';
+btn.style.left = Math.random() * 80 + '%';
+btn.style.top = Math.random() * 80 + '%';
+btn.innerText = "Try Harder! 😂";
+createSparkle(e.pageX, e.pageY);
+}
 
-        function celebrate() {
-            document.getElementById('ask-section').classList.add('hidden');
-            document.getElementById('victory').style.display = 'flex';
-            document.getElementById('body-bg').classList.add('glow-active');
+function createSparkle(x, y) {
+const s = document.createElement('div');
+s.className = 'sparkle';
+s.innerHTML = '✨';
+s.style.left = x + 'px';
+s.style.top = y + 'px';
+s.style.setProperty('--tw', (Math.random()*200-100)+'px');
+s.style.setProperty('--th', (Math.random()*200-100)+'px');
+document.body.appendChild(s);
+setTimeout(() => s.remove(), 1000);
+}
 
-            // Pure celebration confetti (No pigs)
-            const duration = 10 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+function celebrate() {
+document.getElementById('ask-section').classList.add('hidden');
+document.getElementById('victory').style.display = 'flex';
+document.getElementById('body-bg').classList.add('glow-active');
 
-            function randomInRange(min, max) {
-              return Math.random() * (max - min) + min;
-            }
+const scalar = 4;
+const shapes = [
+confetti.shapeFromText({ text: '💖', scalar }),
+confetti.shapeFromText({ text: '🎉', scalar }),
+confetti.shapeFromText({ text: '🥳', scalar }),
+confetti.shapeFromText({ text: '✨', scalar })
+];
 
-            const interval = setInterval(function() {
-              const timeLeft = animationEnd - Date.now();
+const end = Date.now() + (5 * 1000);
 
-              if (timeLeft <= 0) {
-                return clearInterval(interval);
-              }
+(function frame() {
+confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, shapes: shapes, scalar: 2 });
+confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, shapes: shapes, scalar: 2 });
+if (Date.now() < end) requestAnimationFrame(frame);
+}());
+}
+</script>
 
-              const particleCount = 50 * (timeLeft / duration);
-              // hearts and sparkles
-              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-            }, 250);
-        }
-    </script>
 </body>
 </html>
