@@ -1,218 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Valentine</title>
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #ff9a9e, #fad0c4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Message For You</title>
+    <style>
+        :root {
+            --pink: #ff4d6d;
+            --light-pink: #ffb3c1;
+        }
 
-.container {
-  width: 90%;
-  max-width: 700px;
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  text-align: center;
-}
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fff0f3;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
 
-h1 {
-  margin-bottom: 15px;
-}
+        .container {
+            text-align: center;
+            position: relative;
+            width: 300px;
+        }
 
-/* Slideshow */
-.slideshow {
-  position: relative;
-  width: 100%;
-  height: 300px;
-  overflow: hidden;
-  border-radius: 15px;
-}
+        /* The Photo Stack */
+        .stack {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            margin-bottom: 20px;
+        }
 
-.slide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1s ease;
-}
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            box-sizing: border-box;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s;
+            cursor: pointer;
+            border: 5px solid white;
+        }
 
-.slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 15px;
-}
+        .card img {
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
 
-.slide.active {
-  opacity: 1;
-}
+        .caption {
+            margin-top: 15px;
+            font-style: italic;
+            color: #555;
+            font-size: 1.1rem;
+        }
 
-.caption {
-  margin-top: 10px;
-  font-size: 18px;
-}
+        /* Final Question Styling */
+        #final-ask {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
 
-/* Stack Photos */
-.stack-container {
-  position: relative;
-  width: 250px;
-  height: 250px;
-  margin: 30px auto;
-}
+        h1 { color: var(--pink); margin-bottom: 20px; }
 
-.stack-container img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 15px;
-  transition: transform 1s, opacity 1s;
-}
+        .buttons button {
+            padding: 10px 25px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: transform 0.2s;
+        }
 
-.message-box {
-  margin-top: 15px;
-}
+        .yes-btn { background-color: var(--pink); color: white; }
+        .no-btn { background-color: #ddd; }
 
-.message-box textarea {
-  width: 100%;
-  height: 70px;
-  border-radius: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-}
-
-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.next-btn {
-  background: #ff4b6e;
-  color: white;
-}
-
-.final-screen {
-  display: none;
-}
-
-.final-screen h2 {
-  font-size: 30px;
-}
-
-</style>
+        .hidden { display: none; }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+    <div class="container">
+        <div id="photo-stack" class="stack">
+            
+            <div class="card" onclick="nextCard(this)">
+                <img src="https://via.placeholder.com/300x400?text=Photo+5" alt="Photo 5">
+                <div class="caption">And mostly, I love being with you.</div>
+            </div>
 
-  <div id="mainContent">
+            <div class="card" onclick="nextCard(this)">
+                <img src="https://via.placeholder.com/300x400?text=Photo+4" alt="Photo 4">
+                <div class="caption">I love how you make me laugh...</div>
+            </div>
 
-    <h1>Our Memories ❤️</h1>
+            <div class="card" onclick="nextCard(this)">
+                <img src="https://via.placeholder.com/300x400?text=Photo+3" alt="Photo 3">
+                <div class="caption">Every moment feels like a movie.</div>
+            </div>
 
-    <div class="slideshow">
-      <div class="slide active">
-        <img src="photo1.jpg">
-      </div>
-      <div class="slide">
-        <img src="photo2.jpg">
-      </div>
-      <div class="slide">
-        <img src="photo3.jpg">
-      </div>
-      <div class="slide">
-        <img src="photo4.jpg">
-      </div>
-      <div class="slide">
-        <img src="photo5.jpg">
-      </div>
+            <div class="card" onclick="nextCard(this)">
+                <img src="https://via.placeholder.com/300x400?text=Photo+2" alt="Photo 2">
+                <div class="caption">Remember this day? I still do.</div>
+            </div>
+
+            <div class="card" onclick="nextCard(this)">
+                <img src="https://via.placeholder.com/300x400?text=Photo+1" alt="Photo 1">
+                <div class="caption">Click to see our memories... ❤️</div>
+            </div>
+        </div>
+
+        <div id="final-ask">
+            <h1>Will you be my Valentine? 🌹</h1>
+            <div class="buttons">
+                <button class="yes-btn" onclick="celebrate()">YES!</button>
+                <button class="no-btn" id="no-button" onmouseover="moveButton()">No</button>
+            </div>
+        </div>
     </div>
 
-    <div class="caption" id="captionText">
-      Beautiful memories together
-    </div>
+    <script>
+        let cardsPopped = 0;
+        const totalCards = 5;
 
-    <h2>My Favorite Moments</h2>
+        function nextCard(cardElement) {
+            // Animation: Fly away to the right and rotate
+            cardElement.style.transform = "translateX(500px) rotate(30deg)";
+            cardElement.style.opacity = "0";
+            
+            cardsPopped++;
 
-    <div class="stack-container" id="stackContainer">
-      <img src="photo1.jpg">
-      <img src="photo2.jpg">
-      <img src="photo3.jpg">
-      <img src="photo4.jpg">
-      <img src="photo5.jpg">
-    </div>
+            // After all cards are gone, show the question
+            if (cardsPopped === totalCards) {
+                setTimeout(() => {
+                    document.getElementById('photo-stack').classList.add('hidden');
+                    document.getElementById('final-ask').style.display = 'flex';
+                }, 600);
+            }
+        }
 
-    <div class="message-box">
-      <textarea placeholder="Type your message here..."></textarea>
-    </div>
+        // Fun trick: The 'No' button moves away when they try to click it
+        function moveButton() {
+            const btn = document.getElementById('no-button');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.position = 'absolute';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
 
-    <button class="next-btn" onclick="showFinal()">Next</button>
-
-  </div>
-
-  <div class="final-screen" id="finalScreen">
-    <h2>Will You Be My Valentine? ❤️</h2>
-    <button class="next-btn" onclick="alert('Yay! ❤️')">Yes</button>
-    <button class="next-btn" onclick="alert('I will try again 😄')">No</button>
-  </div>
-
-</div>
-
-<script>
-
-/* Slideshow */
-let slides = document.querySelectorAll('.slide');
-let caption = document.getElementById('captionText');
-let currentSlide = 0;
-
-let captions = [
-  "Our First Memory",
-  "Best Day Ever",
-  "Laughing Together",
-  "Adventures With You",
-  "Forever Us"
-];
-
-setInterval(() => {
-  slides[currentSlide].classList.remove('active');
-  currentSlide = (currentSlide + 1) % slides.length;
-  slides[currentSlide].classList.add('active');
-  caption.innerText = captions[currentSlide];
-}, 3000);
-
-/* Stack Animation */
-let stackImages = document.querySelectorAll('#stackContainer img');
-let stackIndex = 0;
-
-setInterval(() => {
-  stackImages.forEach((img, i) => {
-    img.style.transform = `translateY(${(i - stackIndex) * 10}px) scale(${1 - (i - stackIndex) * 0.05})`;
-    img.style.opacity = (i === stackIndex) ? 1 : 0.5;
-  });
-  stackIndex = (stackIndex + 1) % stackImages.length;
-}, 2000);
-
-/* Final Screen */
-function showFinal() {
-  document.getElementById('mainContent').style.display = 'none';
-  document.getElementById('finalScreen').style.display = 'block';
-}
-
-</script>
-
+        function celebrate() {
+            alert("Yay! Best Valentine's ever! ❤️");
+            // You can add confetti or redirect to a music video here
+        }
+    </script>
 </body>
 </html>
