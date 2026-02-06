@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Message For You</title>
+    <title>A Little Surprise...</title>
     <style>
         :root {
-            --pink: #ff4d6d;
-            --light-pink: #ffb3c1;
+            --accent: #ff4d6d;
+            --bg: #fff0f3;
         }
 
         body {
@@ -15,24 +15,44 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #fff0f3;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            font-family: 'Arial', sans-serif;
             margin: 0;
             overflow: hidden;
-        }
-
-        .container {
             text-align: center;
-            position: relative;
-            width: 300px;
         }
 
-        /* The Photo Stack */
+        /* Intro Screen */
+        #intro-screen {
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease;
+        }
+
+        .heart-loader {
+            font-size: 50px;
+            animation: beat 1s infinite;
+        }
+
+        @keyframes beat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Stack Section */
+        #main-content { display: none; width: 320px; }
+
         .stack {
             position: relative;
-            width: 300px;
-            height: 400px;
-            margin-bottom: 20px;
+            height: 450px;
+            width: 100%;
         }
 
         .card {
@@ -41,128 +61,136 @@
             height: 100%;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 15px;
             box-sizing: border-box;
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s;
+            transition: transform 0.6s ease, opacity 0.4s;
             cursor: pointer;
-            border: 5px solid white;
+            border: 8px solid white;
         }
 
         .card img {
             width: 100%;
-            height: 80%;
+            height: 75%;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         .caption {
             margin-top: 15px;
-            font-style: italic;
-            color: #555;
             font-size: 1.1rem;
+            color: #444;
+            font-weight: bold;
         }
 
-        /* Final Question Styling */
-        #final-ask {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        h1 { color: var(--pink); margin-bottom: 20px; }
-
-        .buttons button {
-            padding: 10px 25px;
+        /* Prank Game Styles */
+        #final-game { display: none; }
+        .btn-container { position: relative; height: 100px; margin-top: 20px; }
+        
+        button {
+            padding: 12px 30px;
             font-size: 1.2rem;
             border: none;
-            border-radius: 25px;
+            border-radius: 50px;
             cursor: pointer;
-            margin: 0 10px;
-            transition: transform 0.2s;
+            transition: 0.2s;
         }
 
-        .yes-btn { background-color: var(--pink); color: white; }
-        .no-btn { background-color: #ddd; }
+        .yes-btn { background: var(--accent); color: white; }
+        .no-btn { background: #bbb; color: white; position: absolute; }
 
-        .hidden { display: none; }
+        #success-msg { display: none; font-size: 2rem; color: var(--accent); }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div id="photo-stack" class="stack">
-            
-            <div class="card" onclick="nextCard(this)">
-                <img src="https://via.placeholder.com/300x400?text=Photo+5" alt="Photo 5">
-                <div class="caption">And mostly, I love being with you.</div>
-            </div>
+    <div id="intro-screen">
+        <div class="heart-loader">❤️</div>
+        <h2 id="intro-text">I have something to show you...</h2>
+        <button onclick="startExperience()" style="margin-top:20px; background:black; color:white;">Open Secret</button>
+    </div>
 
-            <div class="card" onclick="nextCard(this)">
-                <img src="https://via.placeholder.com/300x400?text=Photo+4" alt="Photo 4">
-                <div class="caption">I love how you make me laugh...</div>
+    <div id="main-content">
+        <div class="stack" id="stack">
+            <div class="card" onclick="popCard(this)">
+                <img src="photo5.jpg" alt="Memory 5">
+                <div class="caption">Wait... one last thing...</div>
             </div>
-
-            <div class="card" onclick="nextCard(this)">
-                <img src="https://via.placeholder.com/300x400?text=Photo+3" alt="Photo 3">
-                <div class="caption">Every moment feels like a movie.</div>
+            <div class="card" onclick="popCard(this)">
+                <img src="photo4.jpg" alt="Memory 4">
+                <div class="caption">I love how you make everything better.</div>
             </div>
-
-            <div class="card" onclick="nextCard(this)">
-                <img src="https://via.placeholder.com/300x400?text=Photo+2" alt="Photo 2">
-                <div class="caption">Remember this day? I still do.</div>
+            <div class="card" onclick="popCard(this)">
+                <img src="photo3.jpg" alt="Memory 3">
+                <div class="caption">This one is my favorite. ❤️</div>
             </div>
-
-            <div class="card" onclick="nextCard(this)">
-                <img src="https://via.placeholder.com/300x400?text=Photo+1" alt="Photo 1">
-                <div class="caption">Click to see our memories... ❤️</div>
+            <div class="card" onclick="popCard(this)">
+                <img src="photo2.jpg" alt="Memory 2">
+                <div class="caption">Every day with you is a blessing.</div>
+            </div>
+            <div class="card" onclick="popCard(this)">
+                <img src="photo1.jpg" alt="Memory 1">
+                <div class="caption">Click to start our journey...</div>
             </div>
         </div>
 
-        <div id="final-ask">
-            <h1>Will you be my Valentine? 🌹</h1>
-            <div class="buttons">
-                <button class="yes-btn" onclick="celebrate()">YES!</button>
-                <button class="no-btn" id="no-button" onmouseover="moveButton()">No</button>
+        <div id="final-game">
+            <h2 id="question">Will you be my Valentine? 🌹</h2>
+            <div class="btn-container">
+                <button class="yes-btn" onclick="celebrate()">YES</button>
+                <button class="no-btn" id="no-btn" onmouseover="moveNo()">NO</button>
             </div>
+        </div>
+
+        <div id="success-msg">
+            <h1>I KNEW IT! ❤️</h1>
+            <p>Can't wait to see you!</p>
         </div>
     </div>
 
     <script>
         let cardsPopped = 0;
-        const totalCards = 5;
 
-        function nextCard(cardElement) {
-            // Animation: Fly away to the right and rotate
-            cardElement.style.transform = "translateX(500px) rotate(30deg)";
-            cardElement.style.opacity = "0";
-            
+        function startExperience() {
+            const intro = document.getElementById('intro-screen');
+            intro.style.opacity = '0';
+            setTimeout(() => {
+                intro.style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }, 1000);
+        }
+
+        function popCard(card) {
+            card.style.transform = "translateX(500px) rotate(45deg)";
+            card.style.opacity = "0";
             cardsPopped++;
-
-            // After all cards are gone, show the question
-            if (cardsPopped === totalCards) {
+            
+            if (cardsPopped === 5) {
                 setTimeout(() => {
-                    document.getElementById('photo-stack').classList.add('hidden');
-                    document.getElementById('final-ask').style.display = 'flex';
+                    document.getElementById('stack').style.display = 'none';
+                    document.getElementById('final-game').style.display = 'block';
                 }, 600);
             }
         }
 
-        // Fun trick: The 'No' button moves away when they try to click it
-        function moveButton() {
-            const btn = document.getElementById('no-button');
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
-            btn.style.position = 'absolute';
+        // The Prank: Move the NO button
+        function moveNo() {
+            const btn = document.getElementById('no-btn');
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
+            
+            // Joking alert
+            if (Math.random() < 0.2) {
+                alert("Error 404: 'No' option is currently unavailable. Please choose 'Yes'. 😉");
+            }
         }
 
         function celebrate() {
-            alert("Yay! Best Valentine's ever! ❤️");
-            // You can add confetti or redirect to a music video here
+            document.getElementById('final-game').style.display = 'none';
+            document.getElementById('success-msg').style.display = 'block';
+            // Optional: Redirect to a video link or play a song here
         }
     </script>
 </body>
