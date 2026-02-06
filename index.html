@@ -3,148 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Message For You ❤️</title>
+    <title>For My Forever ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --accent: #ff4d6d; --text: #4a4a4a; }
+        :root { --accent: #ff4d6d; --romantic-pink: #fff0f3; }
         
         body { 
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
-            font-family: 'Palatino', 'Georgia', serif; overflow: hidden;
+            font-family: 'Georgia', serif; overflow: hidden;
             background: radial-gradient(circle, #fff0f3 0%, #ffcbd1 100%);
         }
 
         .hidden { display: none !important; }
 
-        /* Dramatic Container */
         .container { 
-            text-align: center; max-width: 450px; width: 90%; padding: 25px; 
-            background: rgba(255, 255, 255, 0.9); border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            text-align: center; max-width: 450px; width: 90%; padding: 30px; 
+            background: rgba(255, 255, 255, 0.95); border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            border: 2px solid white;
         }
 
-        /* Image Display */
         .image-frame {
             position: relative; overflow: hidden; border-radius: 20px;
-            border: 8px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            transition: transform 0.8s ease;
+            border: 10px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        .image-frame img { width: 100%; display: block; transition: opacity 1s ease; }
+        .image-frame img { width: 100%; display: block; transition: opacity 1.2s ease-in-out; }
 
-        /* Text & Descriptions */
         .description { 
-            margin: 25px 0; font-size: 1.2rem; color: var(--text); 
-            min-height: 80px; line-height: 1.6; font-style: italic;
-            transition: opacity 0.8s ease;
+            margin: 30px 0; font-size: 1.25rem; color: #4a4a4a; 
+            min-height: 90px; line-height: 1.7; font-style: italic;
+            transition: opacity 1s ease;
         }
 
-        /* Dramatic Buttons */
-        .btn-primary {
+        .btn-dramatic {
             background: var(--accent); color: white; border: none;
-            padding: 15px 40px; border-radius: 50px; font-size: 1.1rem;
-            cursor: pointer; transition: all 0.4s; box-shadow: 0 5px 15px rgba(255,77,109,0.3);
-            font-weight: bold;
+            padding: 18px 45px; border-radius: 50px; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.5s; box-shadow: 0 10px 20px rgba(255,77,109,0.3);
+            letter-spacing: 1px;
         }
-        .btn-primary:hover { transform: scale(1.05); background: #ff3355; }
+        .btn-dramatic:hover { transform: scale(1.05) translateY(-2px); background: #ff3355; }
 
-        .no-btn { background: #bdc3c7; position: absolute; }
+        .no-btn { background: #95a5a6; position: absolute; }
 
-        /* Animations */
-        .fade-in { animation: fadeIn 2s forwards; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .proposal-text { font-size: 2.2rem; color: #ff3355; margin-bottom: 20px; }
 
-        /* Last Screen Styles */
-        .final-box { padding: 20px; border: 2px dashed var(--accent); border-radius: 20px; margin-top: 20px; }
+        .final-request-box {
+            padding: 25px; border-radius: 20px; background: #fff0f3;
+            border: 2px dashed var(--accent); margin-top: 25px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .fade-in { animation: fadeIn 2.5s forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <iframe id="bgMusic" width="0" height="0" 
-        src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" 
-        frameborder="0" allow="autoplay"></iframe>
+    <div style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;">
+        <iframe width="560" height="315" 
+            src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" 
+            allow="autoplay">
+        </iframe>
+    </div>
 
-    <div id="password-screen" class="container">
-        <h1 style="color:var(--accent)">🔒 Private Memory</h1>
-        <p>Unlock our world with our secret phrase...</p>
+    <div id="lock-screen" class="container">
+        <h1 style="color:var(--accent); font-size: 2.5rem;">🔒 Unlock My Heart</h1>
+        <p style="font-size: 1.1rem; margin-bottom: 30px;">Type our secret phrase to begin...</p>
         <input type="text" id="pass-input" placeholder="Type 'I LOVE YOU'..." 
-               style="width: 85%; padding: 15px; border: 2px solid var(--accent); border-radius: 15px; text-align: center; font-size: 1.1rem;" 
+               style="width: 85%; padding: 18px; border: 2px solid var(--accent); border-radius: 20px; text-align: center; font-size: 1.2rem;" 
                oninput="checkPass()">
     </div>
 
     <div id="story-screen" class="container hidden">
-        <div class="image-frame" id="frame">
+        <div class="image-frame">
             <img id="display-img" src="IMG_0444.jpeg">
         </div>
-        <div class="description" id="img-desc">It started with a look... and then I knew.</div>
-        <button class="btn-primary" id="next-btn" onclick="nextStep()">Continue Memory... ✨</button>
+        <div class="description" id="img-desc">I looked at this photo and realized... my world was changing for the better.</div>
+        <button class="btn-dramatic" id="next-btn" onclick="nextStep()">Tell me more... ✨</button>
     </div>
 
     <div id="ask-screen" class="container hidden">
-        <h1 class="fade-in" style="color: var(--accent);">My Dear... ❤️</h1>
-        <p class="fade-in" style="font-size: 1.2rem;">Every moment spent with you is a gift I never want to stop opening.</p>
-        <h2 class="fade-in" style="color: #ff3355; font-size: 2rem;">Will you be my Dalenvine? 🌹</h2>
-        <div style="height: 120px; position: relative; margin-top: 30px;">
-            <button class="btn-primary" style="font-size: 1.5rem; background: #27ae60;" onclick="acceptProposal()">YES! 💖</button>
-            <button class="btn-primary no-btn" id="no-btn" onmouseover="moveNo()">No</button>
+        <h1 class="fade-in" style="color: var(--accent); font-size: 1.5rem;">My Heart, My Soul...</h1>
+        <p class="fade-in" style="font-size: 1.3rem;">I don't just want a Valentine. I want a lifetime with you.</p>
+        <h2 class="proposal-text fade-in">Will you be my Dalenvine? 🌹</h2>
+        
+        <div style="height: 150px; position: relative; margin-top: 40px;">
+            <button class="btn-dramatic" style="font-size: 1.6rem; background: #27ae60; width: 80%;" onclick="yes()">YES, A THOUSAND TIMES!</button>
+            <button class="btn-dramatic no-btn" id="no-btn" onmouseover="moveNo()">No</button>
         </div>
     </div>
 
     <div id="final-screen" class="container hidden">
-        <h1 style="color: var(--accent);">It's Official! 🥳❤️</h1>
-        <p style="font-size: 1.2rem;">You are mine, and I am yours.</p>
+        <h1 style="color: var(--accent); font-size: 2.8rem;">Forever Yours. ❤️</h1>
+        <p style="font-size: 1.2rem;">My heart is officially your property now.</p>
         
-        <div class="final-box fade-in">
-            <h3>I have a tiny request... 🥺</h3>
-            <p>I want to see how beautiful you look today. Please <b>send me 2 or 3 of your latest photos</b> right now!</p>
-            <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
-            <h3>Ready for more?</h3>
-            <p>Let's celebrate properly—hop on a <b>Video Call</b> with me as soon as you see this! 🎥✨</p>
+        <div class="final-request-box fade-in">
+            <h3 style="margin-top: 0;">Wait! Just one thing... 🥺</h3>
+            <p>I am missing you way too much right now. Can you please <b>send me 2-3 of your favorite photos</b> you took today?</p>
+            <hr style="border: 0; border-top: 1px solid var(--accent); opacity: 0.3; margin: 20px 0;">
+            <p style="font-weight: bold; font-size: 1.3rem;">And then... can we have a Video Call? 🎥</p>
+            <p>I want to see your smile and celebrate this moment together.</p>
         </div>
-        <p style="margin-top: 20px; font-style: italic; color: #888;">Contract signed forever. No returns! 📝🐽</p>
+        
+        <p style="margin-top: 30px; font-style: italic; color: #777;">I'm waiting for your text... 🐽💖</p>
     </div>
 
     <script>
         const story = [
-            { img: "IMG_0444.jpeg", desc: "I still remember the first time I saw this... my heart skipped a beat. ✨" },
-            { img: "IMG_0461.jpeg", desc: "This memory is etched in my soul. You look so incredibly perfect here." },
-            { img: "IMG_0462.jpeg", desc: "No matter how bad my day is, your smile in this photo is my instant cure. ❤️" },
-            { img: "IMG_0514.jpeg", desc: "Look at us... we aren't just a couple; we are a masterpiece in the making." },
-            { img: "IMG_0541.jpeg", desc: "I promise to hold your hand through every high and every low. Forever." },
-            { img: "IMG_0697.jpeg", desc: "And now, I want to ask you something that will change our 'today' into 'always'..." }
+            { img: "IMG_0444.jpeg", text: "Every time I look at this, I see a future I never knew I wanted until I met you. ✨" },
+            { img: "IMG_0461.jpeg", text: "You have this way of making everything feel beautiful, just by being in it." },
+            { img: "IMG_0462.jpeg", text: "That smile in this photo? It's the reason I believe in magic. ❤️" },
+            { img: "IMG_0514.jpeg", text: "I looked at this and thought: 'This is it. This is the person I want by my side.'" },
+            { img: "IMG_0541.jpeg", text: "Through every laugh and every tear, I promise to be your safest place." },
+            { img: "IMG_0697.jpeg", text: "I have one final memory to make with you today... and it starts with a question." }
         ];
 
-        let step = 0;
+        let currentStep = 0;
 
         function checkPass() {
             if (document.getElementById('pass-input').value.toUpperCase() === "I LOVE YOU") {
-                document.getElementById('password-screen').classList.add('hidden');
-                document.getElementById('story-screen').classList.remove('hidden');
-                document.getElementById('story-screen').classList.add('fade-in');
+                document.getElementById('lock-screen').classList.add('fade-out');
+                setTimeout(() => {
+                    document.getElementById('lock-screen').classList.add('hidden');
+                    document.getElementById('story-screen').classList.remove('hidden');
+                    document.getElementById('story-screen').classList.add('fade-in');
+                }, 500);
             }
         }
 
         function nextStep() {
-            step++;
+            currentStep++;
             const img = document.getElementById('display-img');
             const desc = document.getElementById('img-desc');
-            const nextBtn = document.getElementById('next-btn');
-
-            if (step < story.length) {
-                // Smooth Fade Out
+            
+            if (currentStep < story.length) {
                 img.style.opacity = '0';
                 desc.style.opacity = '0';
                 
                 setTimeout(() => {
-                    img.src = story[step].img;
-                    desc.innerText = story[step].desc;
-                    // Smooth Fade In
+                    img.src = story[currentStep].img;
+                    desc.innerText = story[currentStep].text;
                     img.style.opacity = '1';
                     desc.style.opacity = '1';
                     
-                    if (step === story.length - 1) {
-                        nextBtn.innerText = "The Final Question... ❤️";
+                    if (currentStep === story.length - 1) {
+                        document.getElementById('next-btn').innerText = "Ask Me... ❤️";
                     }
-                }, 800);
+                }, 1000);
             } else {
                 document.getElementById('story-screen').classList.add('hidden');
                 document.getElementById('ask-screen').classList.remove('hidden');
@@ -155,36 +166,20 @@
             const btn = document.getElementById('no-btn');
             btn.style.left = Math.random() * 70 + '%';
             btn.style.top = Math.random() * 70 + '%';
-            btn.innerText = "Try Harder! 😂";
+            btn.innerText = "You can't click this! 😂";
         }
 
-        function acceptProposal() {
+        function yes() {
             document.getElementById('ask-screen').classList.add('hidden');
             document.getElementById('final-screen').classList.remove('hidden');
             
-            // Celebration Confetti
-            const duration = 8 * 1000;
-            const end = Date.now() + duration;
+            const end = Date.now() + (10 * 1000);
+            const colors = ['#ff4d6d', '#ffffff', '#ffb3c1'];
 
             (function frame() {
-                confetti({
-                    particleCount: 2,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: ['#ff4d6d', '#ffffff', '#ffd0d0']
-                });
-                confetti({
-                    particleCount: 2,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: ['#ff4d6d', '#ffffff', '#ffd0d0']
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+                if (Date.now() < end) requestAnimationFrame(frame);
             }());
         }
     </script>
