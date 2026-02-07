@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Forever ❤️</title>
+    <title>Our Love Story ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root { --accent: #ff4d6d; --romantic-pink: #fff0f3; }
@@ -17,41 +17,48 @@
         .hidden { display: none !important; }
 
         .container { 
-            text-align: center; max-width: 450px; width: 90%; padding: 30px; 
+            text-align: center; max-width: 450px; width: 92%; padding: 25px; 
             background: rgba(255, 255, 255, 0.95); border-radius: 30px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            border: 2px solid white;
-            z-index: 10;
+            border: 2px solid white; z-index: 10; overflow-y: auto; max-height: 95vh;
         }
 
+        /* Image Display */
         .image-frame {
             position: relative; overflow: hidden; border-radius: 20px;
-            border: 10px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 6px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
         }
-        .image-frame img { width: 100%; display: block; transition: opacity 1.2s ease-in-out; }
+        .image-frame img { width: 100%; display: block; transition: opacity 0.8s ease; }
+
+        /* Bubu & Dudu Reaction Box */
+        .reaction-box {
+            width: 100px; height: 100px; margin: 0 auto;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .reaction-box img { width: 100%; height: auto; border-radius: 10px; }
 
         .description { 
-            margin: 30px 0; font-size: 1.25rem; color: #4a4a4a; 
-            min-height: 90px; line-height: 1.7; font-style: italic;
-            transition: opacity 1s ease;
+            margin: 15px 0; font-size: 1.15rem; color: #4a4a4a; 
+            min-height: 60px; line-height: 1.5; font-style: italic;
+            transition: opacity 0.6s ease;
         }
 
         .btn-dramatic {
             background: var(--accent); color: white; border: none;
-            padding: 18px 45px; border-radius: 50px; font-size: 1.1rem;
-            cursor: pointer; transition: all 0.5s; box-shadow: 0 10px 20px rgba(255,77,109,0.3);
-            letter-spacing: 1px; font-weight: bold;
+            padding: 15px 40px; border-radius: 50px; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.4s; box-shadow: 0 8px 15px rgba(255,77,109,0.3);
+            font-weight: bold; margin-top: 10px;
         }
-        .btn-dramatic:hover { transform: scale(1.05) translateY(-2px); background: #ff3355; }
 
         .no-btn { background: #95a5a6; position: absolute; }
 
         .final-request-box {
-            padding: 25px; border-radius: 20px; background: #fff0f3;
-            border: 2px dashed var(--accent); margin-top: 25px;
+            padding: 20px; border-radius: 20px; background: #fff0f3;
+            border: 2px dashed var(--accent); margin-top: 20px;
         }
 
-        .fade-in { animation: fadeIn 2s forwards; }
+        .fade-in { animation: fadeIn 1.5s forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -60,55 +67,78 @@
     <div id="music-container" style="position: absolute; left: -9999px;"></div>
 
     <div id="lock-screen" class="container">
-        <h1 style="color:var(--accent); font-size: 2.5rem;">🔒 Unlock My Heart</h1>
-        <p style="font-size: 1.1rem; margin-bottom: 30px;">Our journey begins with our favorite phrase...</p>
+        <div class="reaction-box"><img src="https://media.tenor.com/7S8Y9tN8v74AAAAi/bubu-dudu-bubu.gif" alt="Bubu wave"></div>
+        <h1 style="color:var(--accent); font-size: 2rem; margin-top: 10px;">🔒 Unlock My Heart</h1>
+        <p>Type our favorite phrase to see our memories...</p>
         <input type="text" id="pass-input" placeholder="Type 'I LOVE YOU'..." 
-               style="width: 85%; padding: 18px; border: 2px solid var(--accent); border-radius: 20px; text-align: center; font-size: 1.2rem;" 
+               style="width: 85%; padding: 15px; border: 2px solid var(--accent); border-radius: 20px; text-align: center; font-size: 1.1rem;" 
                oninput="checkPass()">
-        <p style="font-size: 0.8rem; color: #888; margin-top: 15px;">(Type the password to start the music ✨)</p>
     </div>
 
     <div id="story-screen" class="container hidden">
         <div class="image-frame">
             <img id="display-img" src="IMG_0444.jpeg">
         </div>
-        <div class="description" id="img-desc">I looked at this photo and realized... my world was changing for the better.</div>
-        <button class="btn-dramatic" id="next-btn" onclick="nextStep()">Continue the story... ✨</button>
+        
+        <div class="reaction-box">
+            <img id="reaction-gif" src="https://media.tenor.com/Zf7D-V6Vb88AAAAi/bubu-dudu-kiss.gif">
+        </div>
+
+        <div class="description" id="img-desc">Loading our story...</div>
+        <button class="btn-dramatic" id="next-btn" onclick="nextStep()">More Memories! ✨</button>
     </div>
 
     <div id="ask-screen" class="container hidden">
-        <h1 class="fade-in" style="color: var(--accent); font-size: 1.5rem;">My Heart, My Soul...</h1>
-        <p class="fade-in" style="font-size: 1.3rem;">Every memory we've shared led me to this moment.</p>
-        <h2 class="fade-in" style="color: #ff3355; font-size: 2.2rem; margin-bottom: 20px;">Will you be my Dalenvine? 🌹</h2>
-        
-        <div style="height: 150px; position: relative; margin-top: 40px;">
-            <button class="btn-dramatic" style="font-size: 1.6rem; background: #27ae60; width: 85%;" onclick="yes()">YES, FOREVER! 💖</button>
-            <button class="btn-dramatic no-btn" id="no-btn" onmouseover="moveNo()">No</button>
+        <div class="reaction-box"><img src="https://media.tenor.com/X-L1Sve_5mUAAAAi/bubu-dudu-bubu.gif"></div>
+        <h2 class="fade-in" style="color: #ff3355; font-size: 1.8rem;">Will you be my Dalenvine? 🌹</h2>
+        <div style="height: 120px; position: relative; margin-top: 30px;">
+            <button class="btn-dramatic" style="background: #27ae60; width: 85%;" onclick="yes()">YES, FOREVER! 💖</button>
+            <button class="btn-dramatic no-btn" id="no-btn" onmouseover="moveNo()" onclick="moveNo()">No</button>
         </div>
     </div>
 
     <div id="final-screen" class="container hidden">
-        <h1 style="color: var(--accent); font-size: 2.5rem;">I'm Yours! ❤️</h1>
-        <p style="font-size: 1.2rem;">You've made me the happiest person today.</p>
-        
+        <div class="reaction-box"><img src="https://media.tenor.com/65r8HjW_r_8AAAAi/bubu-dudu-happy.gif"></div>
+        <h1 style="color: var(--accent);">You're Mine! ❤️</h1>
         <div class="final-request-box fade-in">
-            <h3 style="margin-top: 0;">A Little Surprise? 🥺</h3>
-            <p>I want to see your beautiful smile right now. Can you <b>send me 2-3 of your favorite photos</b> from today?</p>
-            <hr style="border: 0; border-top: 1px solid var(--accent); opacity: 0.3; margin: 20px 0;">
-            <p style="font-weight: bold; font-size: 1.3rem;">And then... can we have a Video Call? 🎥</p>
-            <p>I'm waiting to celebrate this with you!</p>
+            <p>I want to see your smile! Send me <b>2-3 photos</b> you took today? And then...</p>
+            <p style="font-weight: bold; font-size: 1.2rem;">Can we Video Call? 🎥</p>
         </div>
+        <p style="font-size: 0.8rem; margin-top: 10px; color: #888;">I'm waiting for you... 🐽</p>
     </div>
 
     <script>
-        // Use an array for your images and descriptions
         const story = [
-            { img: "IMG_0444.jpeg", text: "Every time I look at this, I see a future I never knew I wanted until I met you. ✨" },
-            { img: "IMG_0461.jpeg", text: "You have this way of making everything feel beautiful, just by being in it." },
-            { img: "IMG_0462.jpeg", text: "That smile in this photo? It's the reason I believe in magic. ❤️" },
-            { img: "IMG_0514.jpeg", text: "I looked at this and thought: 'This is it. This is the person I want by my side.'" },
-            { img: "IMG_0541.jpeg", text: "Through every laugh and every tear, I promise to be your safest place." },
-            { img: "IMG_0697.jpeg", text: "Every moment has led to this... and I have one very special question for you." }
+            { 
+                img: "IMG_0444.jpeg", 
+                text: "Every time I look at this, I see our beautiful future. ✨",
+                gif: "https://media.tenor.com/Zf7D-V6Vb88AAAAi/bubu-dudu-kiss.gif" // Kissing
+            },
+            { 
+                img: "IMG_0461.jpeg", 
+                text: "You irritiate me so much, but I wouldn't have it any other way!",
+                gif: "https://media.tenor.com/7S8Y9tN8v74AAAAi/bubu-dudu-bubu.gif" // Irritating/Playful
+            },
+            { 
+                img: "IMG_0462.jpeg", 
+                text: "That smile? It's the only cure for my bad days. ❤️",
+                gif: "https://media.tenor.com/0vKzFhB0-nMAAAAi/bubu-dudu-stare.gif" // In love stare
+            },
+            { 
+                img: "IMG_0514.jpeg", 
+                text: "I just want to bite you because you're so cute! 🦷",
+                gif: "https://media.tenor.com/K_p_o-Fnd78AAAAi/bubu-dudu-bite.gif" // Biting
+            },
+            { 
+                img: "IMG_0541.jpeg", 
+                text: "When you're sad, I just want to hug you forever. 🥺",
+                gif: "https://media.tenor.com/mO_09e1eW_kAAAAi/bubu-dudu-hug.gif" // Sad/Hug
+            },
+            { 
+                img: "IMG_0697.jpeg", 
+                text: "Every moment has led to this... are you ready?",
+                gif: "https://media.tenor.com/pYxR6qK8j88AAAAi/bubu-dudu.gif" // Shy/Happy
+            }
         ];
 
         let currentStep = 0;
@@ -116,7 +146,6 @@
 
         function startMusic() {
             if (!musicStarted) {
-                // Creates the YouTube iframe after user interaction to bypass browser blocks
                 const container = document.getElementById('music-container');
                 container.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" allow="autoplay"></iframe>`;
                 musicStarted = true;
@@ -124,37 +153,38 @@
         }
 
         function checkPass() {
-            const val = document.getElementById('pass-input').value.toUpperCase();
-            if (val === "I LOVE YOU") {
-                startMusic(); // Triggers music on the interaction of typing the full password
-                setTimeout(() => {
-                    document.getElementById('lock-screen').classList.add('hidden');
-                    document.getElementById('story-screen').classList.remove('hidden');
-                    document.getElementById('story-screen').classList.add('fade-in');
-                }, 400);
+            if (document.getElementById('pass-input').value.toUpperCase() === "I LOVE YOU") {
+                startMusic();
+                document.getElementById('lock-screen').classList.add('hidden');
+                document.getElementById('story-screen').classList.remove('hidden');
+                updateDisplay();
             }
+        }
+
+        function updateDisplay() {
+            const img = document.getElementById('display-img');
+            const desc = document.getElementById('img-desc');
+            const gif = document.getElementById('reaction-gif');
+
+            img.style.opacity = '0';
+            desc.style.opacity = '0';
+
+            setTimeout(() => {
+                img.src = story[currentStep].img;
+                desc.innerText = story[currentStep].text;
+                gif.src = story[currentStep].gif;
+                img.style.opacity = '1';
+                desc.style.opacity = '1';
+            }, 500);
         }
 
         function nextStep() {
             currentStep++;
-            const img = document.getElementById('display-img');
-            const desc = document.getElementById('img-desc');
-            const nextBtn = document.getElementById('next-btn');
-
             if (currentStep < story.length) {
-                img.style.opacity = '0';
-                desc.style.opacity = '0';
-                
-                setTimeout(() => {
-                    img.src = story[currentStep].img;
-                    desc.innerText = story[currentStep].text;
-                    img.style.opacity = '1';
-                    desc.style.opacity = '1';
-                    
-                    if (currentStep === story.length - 1) {
-                        nextBtn.innerText = "The Final Question... ❤️";
-                    }
-                }, 1000);
+                updateDisplay();
+                if (currentStep === story.length - 1) {
+                    document.getElementById('next-btn').innerText = "The Final Question... ❤️";
+                }
             } else {
                 document.getElementById('story-screen').classList.add('hidden');
                 document.getElementById('ask-screen').classList.remove('hidden');
@@ -165,19 +195,13 @@
             const btn = document.getElementById('no-btn');
             btn.style.left = Math.random() * 70 + '%';
             btn.style.top = Math.random() * 70 + '%';
-            btn.innerText = "Error 404! 😂";
+            btn.innerText = "No chance! 😂";
         }
 
         function yes() {
             document.getElementById('ask-screen').classList.add('hidden');
             document.getElementById('final-screen').classList.remove('hidden');
-            
-            const end = Date.now() + (10 * 1000);
-            (function frame() {
-                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
-                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff'] });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff'] });
         }
     </script>
 </body>
