@@ -19,9 +19,9 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.15); border: 2px solid white;
             max-height: 95vh; overflow-y: auto;
         }
-        .photo-box { width: 100%; border-radius: 15px; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 10px; }
-        .bubu-big { width: 100%; max-width: 250px; border-radius: 20px; margin-top: 10px; }
-        .description { margin: 15px 0; font-size: 1.15rem; color: #444; font-style: italic; min-height: 50px; line-height: 1.4; }
+        .photo-box { width: 100%; border-radius: 15px; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .bubu-big { width: 90%; border-radius: 20px; border: 4px solid var(--accent); background: white; margin-top: 10px; }
+        .description { margin: 15px 0; font-size: 1.1rem; color: #444; font-style: italic; min-height: 50px; }
         .btn-dramatic { background: var(--accent); color: white; border: none; padding: 16px 45px; border-radius: 50px; font-size: 1.1rem; cursor: pointer; font-weight: bold; }
         .no-btn { background: #95a5a6; position: absolute; }
     </style>
@@ -31,31 +31,28 @@
     <div id="player" style="position: absolute; left: -9999px;"></div>
 
     <div id="screen1" class="container">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/Y8SxzWOTAOO0IAsYV9/giphy.gif" class="bubu-big">
-        <h1 style="color:var(--accent)">Hi Bubi! ❤️</h1>
-        <p>Ready to see our little story?</p>
+        <img src="dudu bubu love.jpeg" class="bubu-big">
+        <h1 style="color:var(--accent)">Hi My Bubi ❤️</h1>
         <button class="btn-dramatic" onclick="initExperience()">Open with Music 🎵</button>
     </div>
 
     <div id="screen2" class="container hidden">
-        <h2 style="color:var(--accent)">One Secret Phrase...</h2>
+        <h2 style="color:var(--accent)">Unlock with Love</h2>
         <input type="text" id="pass" placeholder="Type 'I LOVE YOU'" 
-               style="width: 80%; padding: 15px; border: 2px solid var(--accent); border-radius: 20px; text-align: center; font-size: 1.1rem;" 
+               style="width: 80%; padding: 15px; border: 2px solid var(--accent); border-radius: 20px; text-align: center;" 
                oninput="checkPass()">
     </div>
 
     <div id="screen3" class="container hidden">
         <img id="mem-img" class="photo-box" src="">
-        <div style="display: flex; justify-content: center;">
-            <img id="bubu-img" class="bubu-big" src="">
-        </div>
+        <img id="bubu-img" class="bubu-big" src="">
         <p class="description" id="mem-desc"></p>
-        <button class="btn-dramatic" id="next-btn" onclick="nextMem()">Continue →</button>
+        <button class="btn-dramatic" id="next-btn" onclick="nextMem()">Continue... →</button>
     </div>
 
     <div id="screen4" class="container hidden">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/T86fa12lV9O0/giphy.gif" class="bubu-big">
-        <h2 style="color: #ff3355; font-size: 2rem; margin-top: 15px;">Will you be my Dalenvine? 🌹</h2>
+        <img src="Dudu Bubu GIF - Dudu Bubu - Discover & Share GIFs.gif" class="bubu-big">
+        <h2 style="color: #ff3355; font-size: 1.8rem; margin-top: 15px;">Will you be my Dalenvine? 🌹</h2>
         <div style="height: 100px; position: relative; margin-top: 20px;">
             <button class="btn-dramatic" style="background:#27ae60; width: 85%;" onclick="yes()">YES! 💖</button>
             <button class="btn-dramatic no-btn" id="no-btn" onmouseover="moveNo()">No</button>
@@ -63,23 +60,26 @@
     </div>
 
     <div id="screen5" class="container hidden">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L4lvBpHFmEOfu/giphy.gif" class="bubu-big">
+        <img src="dudu bubu love.jpeg" class="bubu-big">
         <h1 style="color:var(--accent)">It's a Date! ❤️</h1>
-        <p>I'm waiting for your <b>photos</b> and that <b>Video Call</b>! 🎥</p>
+        <p>Send me those <b>photos</b> and let's <b>Video Call</b>! 🎥</p>
     </div>
 
     <script>
+        // Exact matching with the filenames you provided
         const memories = [
-            { photo: "IMG_0444.jpeg", bubu: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L4lvBpHFmEOfu/giphy.gif", text: "Every story has a beginning... ✨" }, // Kissing
-            { photo: "IMG_0461.jpeg", bubu: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOjy0QJD1S/giphy.gif", text: "You're my favorite person to irritate! 😂" }, // Irritating
-            { photo: "IMG_0462.jpeg", bubu: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/Z89v6V4z87VUA/giphy.gif", text: "I just want to bite you! 🦷" }, // Biting
-            { photo: "IMG_0514.jpeg", bubu: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/jR20TzP67fN4s/giphy.gif", text: "I'll always be here to hold you. 🥺" }, // Sad/Hug
-            { photo: "IMG_0541.jpeg", bubu: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/vovWv10976JBC/giphy.gif", text: "You are my heart and home." } // Staring in love
+            { photo: "IMG_0444.jpeg", bubu: "_.jpeg", text: "Every story has a beginning... ✨" },
+            { photo: "IMG_0461.jpeg", bubu: "_ (1).jpeg", text: "I love irritating you just to see that cute face! 😂" },
+            { photo: "IMG_0462.jpeg", bubu: "_ (2).jpeg", text: "Sometimes I just want to bite you! 🦷" },
+            { photo: "IMG_0514.jpeg", bubu: "_ (3).jpeg", text: "I'll always be here to hold you tight. 🥺" },
+            { photo: "IMG_0541.jpeg", bubu: "dudu bubu love.jpeg", text: "You are my heart and my home." },
+            { photo: "IMG_0697.jpeg", bubu: "Dudu Bubu GIF - Dudu Bubu - Discover & Share GIFs.gif", text: "One last thing..." }
         ];
 
         let step = 0;
 
         function initExperience() {
+            // Re-added the mobile-compatible YouTube embed
             document.getElementById('player').innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" allow="autoplay"></iframe>`;
             document.getElementById('screen1').classList.add('hidden');
             document.getElementById('screen2').classList.remove('hidden');
@@ -94,16 +94,22 @@
         }
 
         function updateContent() {
-            document.getElementById('mem-img').src = memories[step].photo;
-            document.getElementById('bubu-img').src = memories[step].bubu;
+            const mImg = document.getElementById('mem-img');
+            const bImg = document.getElementById('bubu-img');
+            
+            // Using encodeURIComponent helps the browser read files with spaces or parentheses correctly
+            mImg.src = memories[step].photo;
+            bImg.src = memories[step].bubu;
+            
             document.getElementById('mem-desc').innerText = memories[step].text;
             if(step === memories.length - 1) document.getElementById('next-btn').innerText = "Ask Me... ❤️";
         }
 
         function nextMem() {
             step++;
-            if (step < memories.length) { updateContent(); } 
-            else {
+            if (step < memories.length) {
+                updateContent();
+            } else {
                 document.getElementById('screen3').classList.add('hidden');
                 document.getElementById('screen4').classList.remove('hidden');
             }
