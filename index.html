@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Love Story ❤️</title>
+    <title>For My Bubu ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --accent: #ff4d6d; --romantic-pink: #fff0f3; }
+        :root { --accent: #ff4d6d; --soft: #fff0f3; }
         
         body { 
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
@@ -17,190 +17,140 @@
         .hidden { display: none !important; }
 
         .container { 
-            text-align: center; max-width: 450px; width: 92%; padding: 25px; 
-            background: rgba(255, 255, 255, 0.95); border-radius: 30px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            border: 2px solid white; z-index: 10; overflow-y: auto; max-height: 95vh;
+            text-align: center; max-width: 420px; width: 90%; padding: 20px; 
+            background: rgba(255, 255, 255, 0.98); border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 2px solid white;
         }
 
         /* Image Display */
         .image-frame {
-            position: relative; overflow: hidden; border-radius: 20px;
-            border: 6px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 20px; border: 6px solid white; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); overflow: hidden;
             margin-bottom: 15px;
         }
         .image-frame img { width: 100%; display: block; transition: opacity 0.8s ease; }
 
-        /* Bubu & Dudu Reaction Box */
-        .reaction-box {
-            width: 100px; height: 100px; margin: 0 auto;
-            display: flex; justify-content: center; align-items: center;
-        }
-        .reaction-box img { width: 100%; height: auto; border-radius: 10px; }
+        /* Bubu Dudu Reactions */
+        .gif-box { height: 120px; display: flex; justify-content: center; align-items: center; margin: 10px 0; }
+        .gif-box img { height: 100%; border-radius: 10px; }
 
         .description { 
-            margin: 15px 0; font-size: 1.15rem; color: #4a4a4a; 
-            min-height: 60px; line-height: 1.5; font-style: italic;
-            transition: opacity 0.6s ease;
+            margin: 15px 0; font-size: 1.1rem; color: #444; 
+            min-height: 70px; line-height: 1.5; font-style: italic;
         }
 
-        .btn-dramatic {
+        .btn-main {
             background: var(--accent); color: white; border: none;
-            padding: 15px 40px; border-radius: 50px; font-size: 1.1rem;
-            cursor: pointer; transition: all 0.4s; box-shadow: 0 8px 15px rgba(255,77,109,0.3);
-            font-weight: bold; margin-top: 10px;
+            padding: 16px 40px; border-radius: 50px; font-size: 1.1rem;
+            cursor: pointer; font-weight: bold; transition: 0.3s;
+            box-shadow: 0 8px 15px rgba(255,77,109,0.3);
         }
 
-        .no-btn { background: #95a5a6; position: absolute; }
+        .no-btn { background: #95a5a6; position: absolute; font-size: 0.8rem; padding: 10px 20px; }
 
-        .final-request-box {
-            padding: 20px; border-radius: 20px; background: #fff0f3;
-            border: 2px dashed var(--accent); margin-top: 20px;
-        }
+        .final-card { padding: 20px; border: 2px dashed var(--accent); border-radius: 20px; background: #fffafb; }
 
-        .fade-in { animation: fadeIn 1.5s forwards; }
+        .fade-in { animation: fadeIn 1.2s forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="music-container" style="position: absolute; left: -9999px;"></div>
+    <div id="player" style="position: absolute; left: -9999px;"></div>
 
-    <div id="lock-screen" class="container">
-        <div class="reaction-box"><img src="https://media.tenor.com/7S8Y9tN8v74AAAAi/bubu-dudu-bubu.gif" alt="Bubu wave"></div>
-        <h1 style="color:var(--accent); font-size: 2rem; margin-top: 10px;">🔒 Unlock My Heart</h1>
-        <p>Type our favorite phrase to see our memories...</p>
-        <input type="text" id="pass-input" placeholder="Type 'I LOVE YOU'..." 
-               style="width: 85%; padding: 15px; border: 2px solid var(--accent); border-radius: 20px; text-align: center; font-size: 1.1rem;" 
+    <div id="screen1" class="container">
+        <div class="gif-box"><img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHIwam05bm05ZzR0cXFqam1qam1qam1qam1qam1qam1qam1qam1qJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/Y8SxzWOTAOO0IAsYV9/giphy.gif"></div>
+        <h1 style="color:var(--accent)">Hi Bubi! ❤️</h1>
+        <p>I have a special story for you. Ready?</p>
+        <button class="btn-main" onclick="initMusic()">Enter with Music 🎵</button>
+    </div>
+
+    <div id="screen2" class="container hidden">
+        <h2 style="color:var(--accent)">One Secret Phrase...</h2>
+        <input type="text" id="pass" placeholder="Type 'I LOVE YOU'" 
+               style="width: 80%; padding: 15px; border: 2px solid var(--accent); border-radius: 20px; text-align: center; font-size: 1.1rem;" 
                oninput="checkPass()">
     </div>
 
-    <div id="story-screen" class="container hidden">
-        <div class="image-frame">
-            <img id="display-img" src="IMG_0444.jpeg">
-        </div>
-        
-        <div class="reaction-box">
-            <img id="reaction-gif" src="https://media.tenor.com/Zf7D-V6Vb88AAAAi/bubu-dudu-kiss.gif">
-        </div>
-
-        <div class="description" id="img-desc">Loading our story...</div>
-        <button class="btn-dramatic" id="next-btn" onclick="nextStep()">More Memories! ✨</button>
+    <div id="screen3" class="container hidden">
+        <div class="image-frame"><img id="mem-img" src="IMG_0444.jpeg"></div>
+        <div class="gif-box"><img id="mem-gif" src=""></div>
+        <p class="description" id="mem-desc"></p>
+        <button class="btn-main" id="next-btn" onclick="nextMem()">Next Memory →</button>
     </div>
 
-    <div id="ask-screen" class="container hidden">
-        <div class="reaction-box"><img src="https://media.tenor.com/X-L1Sve_5mUAAAAi/bubu-dudu-bubu.gif"></div>
-        <h2 class="fade-in" style="color: #ff3355; font-size: 1.8rem;">Will you be my Dalenvine? 🌹</h2>
+    <div id="screen4" class="container hidden">
+        <div class="gif-box"><img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZidjE5bDR1NmV4dzV0bmN0bmN0bmN0bmN0bmN0bmN0bmN0bmN0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/T86fa12lV9O0/giphy.gif"></div>
+        <h2 style="color: #ff3355; font-size: 1.8rem;">Will you be my Dalenvine? 🌹</h2>
         <div style="height: 120px; position: relative; margin-top: 30px;">
-            <button class="btn-dramatic" style="background: #27ae60; width: 85%;" onclick="yes()">YES, FOREVER! 💖</button>
-            <button class="btn-dramatic no-btn" id="no-btn" onmouseover="moveNo()" onclick="moveNo()">No</button>
+            <button class="btn-main" style="background:#27ae60; width: 85%;" onclick="yes()">YES! 💖</button>
+            <button class="btn-main no-btn" id="no-btn" onmouseover="moveNo()">No</button>
         </div>
     </div>
 
-    <div id="final-screen" class="container hidden">
-        <div class="reaction-box"><img src="https://media.tenor.com/65r8HjW_r_8AAAAi/bubu-dudu-happy.gif"></div>
-        <h1 style="color: var(--accent);">You're Mine! ❤️</h1>
-        <div class="final-request-box fade-in">
-            <p>I want to see your smile! Send me <b>2-3 photos</b> you took today? And then...</p>
-            <p style="font-weight: bold; font-size: 1.2rem;">Can we Video Call? 🎥</p>
+    <div id="screen5" class="container hidden">
+        <div class="gif-box"><img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHIwam05bm05ZzR0cXFqam1qam1qam1qam1qam1qam1qam1qam1qJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/Y8SxzWOTAOO0IAsYV9/giphy.gif"></div>
+        <h1 style="color:var(--accent)">I'm So Happy! ❤️</h1>
+        <div class="final-card fade-in">
+            <p>Can you send me <b>2-3 latest photos</b> of you? I miss that face!</p>
+            <hr style="border:0; border-top:1px solid #ffcbd1;">
+            <p><b>Video Call?</b> Let's celebrate! 🎥</p>
         </div>
-        <p style="font-size: 0.8rem; margin-top: 10px; color: #888;">I'm waiting for you... 🐽</p>
+        <p style="margin-top: 15px; font-style: italic;">I love you! 🐽</p>
     </div>
 
     <script>
-        const story = [
-            { 
-                img: "IMG_0444.jpeg", 
-                text: "Every time I look at this, I see our beautiful future. ✨",
-                gif: "https://media.tenor.com/Zf7D-V6Vb88AAAAi/bubu-dudu-kiss.gif" // Kissing
-            },
-            { 
-                img: "IMG_0461.jpeg", 
-                text: "You irritiate me so much, but I wouldn't have it any other way!",
-                gif: "https://media.tenor.com/7S8Y9tN8v74AAAAi/bubu-dudu-bubu.gif" // Irritating/Playful
-            },
-            { 
-                img: "IMG_0462.jpeg", 
-                text: "That smile? It's the only cure for my bad days. ❤️",
-                gif: "https://media.tenor.com/0vKzFhB0-nMAAAAi/bubu-dudu-stare.gif" // In love stare
-            },
-            { 
-                img: "IMG_0514.jpeg", 
-                text: "I just want to bite you because you're so cute! 🦷",
-                gif: "https://media.tenor.com/K_p_o-Fnd78AAAAi/bubu-dudu-bite.gif" // Biting
-            },
-            { 
-                img: "IMG_0541.jpeg", 
-                text: "When you're sad, I just want to hug you forever. 🥺",
-                gif: "https://media.tenor.com/mO_09e1eW_kAAAAi/bubu-dudu-hug.gif" // Sad/Hug
-            },
-            { 
-                img: "IMG_0697.jpeg", 
-                text: "Every moment has led to this... are you ready?",
-                gif: "https://media.tenor.com/pYxR6qK8j88AAAAi/bubu-dudu.gif" // Shy/Happy
-            }
+        const memories = [
+            { img: "IMG_0444.jpeg", txt: "I look at this and realize how lucky I am. ✨", gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/L4lvBpHFmEOfu/giphy.gif" }, // Kiss
+            { img: "IMG_0461.jpeg", txt: "Even when I'm irritating you, I know you love me! 😂", gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/v6aOjy0QJD1S/giphy.gif" }, // Playful poke
+            { img: "IMG_0462.jpeg", txt: "I could stare at your smile for a hundred years.", gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/vovWv10976JBC/giphy.gif" }, // Staring in love
+            { img: "IMG_0514.jpeg", txt: "Sometimes you're so cute I just want to bite you! 🦷", gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/Z89v6V4z87VUA/giphy.gif" }, // Bite
+            { img: "IMG_0541.jpeg", txt: "If you're sad, I'll always be here to hold you. 🥺", gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/jR20TzP67fN4s/giphy.gif" }, // Sad/Hug
+            { img: "IMG_0697.jpeg", txt: "I'm ready for our 'Always'. Are you?", gif: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6bm5pM2t6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/vovWv10976JBC/giphy.gif" }
         ];
 
-        let currentStep = 0;
-        let musicStarted = false;
+        let idx = 0;
 
-        function startMusic() {
-            if (!musicStarted) {
-                const container = document.getElementById('music-container');
-                container.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" allow="autoplay"></iframe>`;
-                musicStarted = true;
-            }
+        function initMusic() {
+            document.getElementById('player').innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" allow="autoplay"></iframe>`;
+            document.getElementById('screen1').classList.add('hidden');
+            document.getElementById('screen2').classList.remove('hidden');
         }
 
         function checkPass() {
-            if (document.getElementById('pass-input').value.toUpperCase() === "I LOVE YOU") {
-                startMusic();
-                document.getElementById('lock-screen').classList.add('hidden');
-                document.getElementById('story-screen').classList.remove('hidden');
-                updateDisplay();
+            if (document.getElementById('pass').value.toUpperCase() === "I LOVE YOU") {
+                document.getElementById('screen2').classList.add('hidden');
+                document.getElementById('screen3').classList.remove('hidden');
+                showMem();
             }
         }
 
-        function updateDisplay() {
-            const img = document.getElementById('display-img');
-            const desc = document.getElementById('img-desc');
-            const gif = document.getElementById('reaction-gif');
-
-            img.style.opacity = '0';
-            desc.style.opacity = '0';
-
-            setTimeout(() => {
-                img.src = story[currentStep].img;
-                desc.innerText = story[currentStep].text;
-                gif.src = story[currentStep].gif;
-                img.style.opacity = '1';
-                desc.style.opacity = '1';
-            }, 500);
+        function showMem() {
+            document.getElementById('mem-img').src = memories[idx].img;
+            document.getElementById('mem-gif').src = memories[idx].gif;
+            document.getElementById('mem-desc').innerText = memories[idx].txt;
+            if(idx === memories.length - 1) document.getElementById('next-btn').innerText = "One Final Question... ❤️";
         }
 
-        function nextStep() {
-            currentStep++;
-            if (currentStep < story.length) {
-                updateDisplay();
-                if (currentStep === story.length - 1) {
-                    document.getElementById('next-btn').innerText = "The Final Question... ❤️";
-                }
+        function nextMem() {
+            idx++;
+            if (idx < memories.length) {
+                showMem();
             } else {
-                document.getElementById('story-screen').classList.add('hidden');
-                document.getElementById('ask-screen').classList.remove('hidden');
+                document.getElementById('screen3').classList.add('hidden');
+                document.getElementById('screen4').classList.remove('hidden');
             }
         }
 
         function moveNo() {
             const btn = document.getElementById('no-btn');
-            btn.style.left = Math.random() * 70 + '%';
-            btn.style.top = Math.random() * 70 + '%';
-            btn.innerText = "No chance! 😂";
+            btn.style.left = Math.random() * 60 + '%';
+            btn.style.top = Math.random() * 60 + '%';
         }
 
         function yes() {
-            document.getElementById('ask-screen').classList.add('hidden');
-            document.getElementById('final-screen').classList.remove('hidden');
+            document.getElementById('screen4').classList.add('hidden');
+            document.getElementById('screen5').classList.remove('hidden');
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff'] });
         }
     </script>
