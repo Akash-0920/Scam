@@ -26,29 +26,29 @@
 
         .image-frame {
             position: relative; overflow: hidden; border-radius: 20px;
-            border: 10px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 8px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         .image-frame img { width: 100%; display: block; transition: opacity 1.2s ease-in-out; }
 
         .description { 
-            margin: 30px 0; font-size: 1.25rem; color: #4a4a4a; 
-            min-height: 90px; line-height: 1.7; font-style: italic;
+            margin: 25px 0; font-size: 1.15rem; color: #4a4a4a; 
+            min-height: 80px; line-height: 1.6; font-style: italic;
             transition: opacity 1s ease;
         }
 
         .btn-dramatic {
             background: var(--accent); color: white; border: none;
-            padding: 18px 45px; border-radius: 50px; font-size: 1.1rem;
+            padding: 16px 40px; border-radius: 50px; font-size: 1.1rem;
             cursor: pointer; transition: all 0.5s; box-shadow: 0 10px 20px rgba(255,77,109,0.3);
-            letter-spacing: 1px; font-weight: bold;
+            font-weight: bold;
         }
-        .btn-dramatic:hover { transform: scale(1.05) translateY(-2px); background: #ff3355; }
+        .btn-dramatic:hover { transform: scale(1.05); background: #ff3355; }
 
-        .no-btn { background: #95a5a6; position: absolute; }
+        .no-btn { background: #95a5a6; position: absolute; font-size: 0.9rem; padding: 10px 20px; }
 
         .final-request-box {
-            padding: 25px; border-radius: 20px; background: #fff0f3;
-            border: 2px dashed var(--accent); margin-top: 25px;
+            padding: 20px; border-radius: 20px; background: #fff0f3;
+            border: 2px dashed var(--accent); margin-top: 20px;
         }
 
         .fade-in { animation: fadeIn 2s forwards; }
@@ -57,84 +57,83 @@
 </head>
 <body>
 
-    <div id="music-container" style="position: absolute; left: -9999px;"></div>
+    <div id="player" style="position: absolute; top: -100px; left: -100px; opacity: 0; pointer-events: none;"></div>
 
-    <div id="lock-screen" class="container">
-        <h1 style="color:var(--accent); font-size: 2.5rem;">🔒 Unlock My Heart</h1>
-        <p style="font-size: 1.1rem; margin-bottom: 30px;">Our journey begins with our favorite phrase...</p>
-        <input type="text" id="pass-input" placeholder="Type 'I LOVE YOU'..." 
-               style="width: 85%; padding: 18px; border: 2px solid var(--accent); border-radius: 20px; text-align: center; font-size: 1.2rem;" 
+    <div id="start-screen" class="container">
+        <h1 style="color:var(--accent); font-size: 2.2rem;">Hello, My Love ❤️</h1>
+        <p style="font-size: 1.1rem; margin-bottom: 25px;">I've prepared a small surprise for you.</p>
+        <button class="btn-dramatic" onclick="initExperience()">Open with Music 🎵</button>
+    </div>
+
+    <div id="lock-screen" class="container hidden">
+        <h1 style="color:var(--accent); font-size: 2rem;">🔒 Private Access</h1>
+        <p style="font-size: 1rem; margin-bottom: 20px;">Type our secret phrase to unlock...</p>
+        <input type="text" id="pass-input" placeholder="Hint: I L_V_ Y_U" 
+               style="width: 85%; padding: 15px; border: 2px solid var(--accent); border-radius: 20px; text-align: center; font-size: 1.2rem;" 
                oninput="checkPass()">
-        <p style="font-size: 0.8rem; color: #888; margin-top: 15px;">(Type the password to start the music ✨)</p>
     </div>
 
     <div id="story-screen" class="container hidden">
         <div class="image-frame">
             <img id="display-img" src="IMG_0444.jpeg">
         </div>
-        <div class="description" id="img-desc">I looked at this photo and realized... my world was changing for the better.</div>
-        <button class="btn-dramatic" id="next-btn" onclick="nextStep()">Continue the story... ✨</button>
+        <div class="description" id="img-desc">It started with a look... and then I knew my world had changed.</div>
+        <button class="btn-dramatic" id="next-btn" onclick="nextStep()">Continue Memory... ✨</button>
     </div>
 
     <div id="ask-screen" class="container hidden">
-        <h1 class="fade-in" style="color: var(--accent); font-size: 1.5rem;">My Heart, My Soul...</h1>
-        <p class="fade-in" style="font-size: 1.3rem;">Every memory we've shared led me to this moment.</p>
-        <h2 class="fade-in" style="color: #ff3355; font-size: 2.2rem; margin-bottom: 20px;">Will you be my Dalenvine? 🌹</h2>
-        
-        <div style="height: 150px; position: relative; margin-top: 40px;">
-            <button class="btn-dramatic" style="font-size: 1.6rem; background: #27ae60; width: 85%;" onclick="yes()">YES, FOREVER! 💖</button>
-            <button class="btn-dramatic no-btn" id="no-btn" onmouseover="moveNo()">No</button>
+        <h1 class="fade-in" style="color: var(--accent); font-size: 1.5rem;">One Last Thing...</h1>
+        <h2 class="fade-in" style="color: #ff3355; font-size: 2.1rem; margin-bottom: 20px;">Will you be my Dalenvine? 🌹</h2>
+        <div style="height: 120px; position: relative; margin-top: 40px;">
+            <button class="btn-dramatic" style="font-size: 1.5rem; background: #27ae60; width: 90%;" onclick="yes()">YES! 💖</button>
+            <button class="btn-dramatic no-btn" id="no-btn" onmouseover="moveNo()" onclick="moveNo()">No</button>
         </div>
     </div>
 
     <div id="final-screen" class="container hidden">
-        <h1 style="color: var(--accent); font-size: 2.5rem;">I'm Yours! ❤️</h1>
-        <p style="font-size: 1.2rem;">You've made me the happiest person today.</p>
-        
+        <h1 style="color: var(--accent); font-size: 2.5rem;">Forever Yours! ❤️</h1>
         <div class="final-request-box fade-in">
-            <h3 style="margin-top: 0;">A Little Surprise? 🥺</h3>
-            <p>I want to see your beautiful smile right now. Can you <b>send me 2-3 of your favorite photos</b> from today?</p>
-            <hr style="border: 0; border-top: 1px solid var(--accent); opacity: 0.3; margin: 20px 0;">
-            <p style="font-weight: bold; font-size: 1.3rem;">And then... can we have a Video Call? 🎥</p>
-            <p>I'm waiting to celebrate this with you!</p>
+            <h3 style="margin-top: 0;">A Little Favor? 🥺</h3>
+            <p>I really want to see your smile right now. Can you <b>send me 2-3 of your latest photos</b>?</p>
+            <hr style="border: 0; border-top: 1px solid var(--accent); opacity: 0.2; margin: 15px 0;">
+            <p style="font-weight: bold; font-size: 1.2rem;">And then... Video Call? 🎥</p>
+            <p>I'm waiting to hear your voice!</p>
         </div>
+        <p style="margin-top: 20px; font-style: italic; color: #777;">I love you! 🐽✨</p>
     </div>
 
     <script>
-        // Use an array for your images and descriptions
         const story = [
             { img: "IMG_0444.jpeg", text: "Every time I look at this, I see a future I never knew I wanted until I met you. ✨" },
             { img: "IMG_0461.jpeg", text: "You have this way of making everything feel beautiful, just by being in it." },
             { img: "IMG_0462.jpeg", text: "That smile in this photo? It's the reason I believe in magic. ❤️" },
             { img: "IMG_0514.jpeg", text: "I looked at this and thought: 'This is it. This is the person I want by my side.'" },
             { img: "IMG_0541.jpeg", text: "Through every laugh and every tear, I promise to be your safest place." },
-            { img: "IMG_0697.jpeg", text: "Every moment has led to this... and I have one very special question for you." }
+            { img: "IMG_0697.jpeg", text: "Everything has led to this moment... and I have a question for you." }
         ];
 
         let currentStep = 0;
-        let musicStarted = false;
 
-        function startMusic() {
-            if (!musicStarted) {
-                // Creates the YouTube iframe after user interaction to bypass browser blocks
-                const container = document.getElementById('music-container');
-                container.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" allow="autoplay"></iframe>`;
-                musicStarted = true;
-            }
+        // 1. Initialize music on the very first click
+        function initExperience() {
+            // Embed music
+            document.getElementById('player').innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" allow="autoplay"></iframe>`;
+            
+            // Move to password screen
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('lock-screen').classList.remove('hidden');
         }
 
+        // 2. Check Password
         function checkPass() {
-            const val = document.getElementById('pass-input').value.toUpperCase();
-            if (val === "I LOVE YOU") {
-                startMusic(); // Triggers music on the interaction of typing the full password
-                setTimeout(() => {
-                    document.getElementById('lock-screen').classList.add('hidden');
-                    document.getElementById('story-screen').classList.remove('hidden');
-                    document.getElementById('story-screen').classList.add('fade-in');
-                }, 400);
+            if (document.getElementById('pass-input').value.toUpperCase() === "I LOVE YOU") {
+                document.getElementById('lock-screen').classList.add('hidden');
+                document.getElementById('story-screen').classList.remove('hidden');
+                document.getElementById('story-screen').classList.add('fade-in');
             }
         }
 
+        // 3. Step through memories
         function nextStep() {
             currentStep++;
             const img = document.getElementById('display-img');
@@ -150,10 +149,7 @@
                     desc.innerText = story[currentStep].text;
                     img.style.opacity = '1';
                     desc.style.opacity = '1';
-                    
-                    if (currentStep === story.length - 1) {
-                        nextBtn.innerText = "The Final Question... ❤️";
-                    }
+                    if (currentStep === story.length - 1) nextBtn.innerText = "The Question... ❤️";
                 }, 1000);
             } else {
                 document.getElementById('story-screen').classList.add('hidden');
@@ -161,13 +157,15 @@
             }
         }
 
+        // 4. Movement of No button
         function moveNo() {
             const btn = document.getElementById('no-btn');
-            btn.style.left = Math.random() * 70 + '%';
-            btn.style.top = Math.random() * 70 + '%';
-            btn.innerText = "Error 404! 😂";
+            btn.style.left = Math.random() * 60 + 10 + '%';
+            btn.style.top = Math.random() * 60 + 10 + '%';
+            btn.innerText = "Error! 😂";
         }
 
+        // 5. Final Celebration
         function yes() {
             document.getElementById('ask-screen').classList.add('hidden');
             document.getElementById('final-screen').classList.remove('hidden');
