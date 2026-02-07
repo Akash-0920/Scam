@@ -23,24 +23,38 @@
             max-height: 95vh; overflow-y: auto;
         }
 
-        /* Large Image Styling */
-        .image-stack { position: relative; margin-bottom: 15px; }
-        
+        /* Image Display Area */
+        .display-area {
+            display: flex; flex-direction: column; align-items: center;
+        }
+
         .main-photo {
             width: 100%; border-radius: 20px; border: 5px solid white;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: opacity 0.8s ease-in-out;
         }
 
-        .bubu-img {
-            width: 80%; margin-top: -30px; border-radius: 15px;
-            border: 4px solid white; box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-            position: relative; z-index: 2; background: white;
-            transition: transform 0.5s ease;
+        .bubu-container {
+            width: 160px; height: 160px; margin-top: -50px; 
+            z-index: 5; background: white; border-radius: 50%;
+            border: 4px solid var(--accent); padding: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: pulse 2s infinite;
+        }
+
+        .bubu-container img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         .description { 
-            margin: 20px 0; font-size: 1.2rem; color: #444; 
-            min-height: 60px; line-height: 1.5; font-style: italic;
+            margin: 15px 0; font-size: 1.2rem; color: #444; 
+            min-height: 70px; line-height: 1.5; font-style: italic;
         }
 
         .btn-dramatic {
@@ -63,9 +77,9 @@
     <div id="player" style="position: absolute; left: -9999px;"></div>
 
     <div id="screen1" class="container">
-        <img src="dudu bubu love.jpeg" style="width: 150px; margin-bottom: 20px;">
+        <img src="dudu bubu love.jpeg" style="width: 150px; border-radius: 20px;">
         <h1 style="color:var(--accent)">Hi My Bubi ❤️</h1>
-        <p>I’ve put our memories and some of "us" (Bubu & Dudu) together.</p>
+        <p>I’ve combined our memories with Dudu & Bubu.</p>
         <button class="btn-dramatic" onclick="initExperience()">Open Our Story 🎵</button>
     </div>
 
@@ -77,17 +91,19 @@
     </div>
 
     <div id="screen3" class="container hidden">
-        <div class="image-stack">
-            <img id="mem-img" class="main-photo" src="">
-            <img id="bubu-act" class="bubu-img" src="">
+        <div class="display-area">
+            <img id="mem-img" class="main-photo" src="IMG_0444.jpeg">
+            <div class="bubu-container">
+                <img id="bubu-img" src="_.jpeg">
+            </div>
         </div>
         <p class="description" id="mem-desc"></p>
-        <button class="btn-dramatic" id="next-btn" onclick="nextMem()">More Love... →</button>
+        <button class="btn-dramatic" id="next-btn" onclick="nextMem()">Continue... →</button>
     </div>
 
     <div id="screen4" class="container hidden">
-        <img src="Dudu Bubu GIF - Dudu Bubu - Discover & Share GIFs.gif" style="width: 180px; margin-bottom: 10px;">
-        <h2 style="color: #ff3355; font-size: 2rem;">Will you be my Dalenvine? 🌹</h2>
+        <img src="Dudu Bubu GIF - Dudu Bubu - Discover & Share GIFs.gif" style="width: 200px; border-radius: 20px;">
+        <h2 style="color: #ff3355; font-size: 2rem; margin-top: 15px;">Will you be my Dalenvine? 🌹</h2>
         <div style="height: 120px; position: relative; margin-top: 30px;">
             <button class="btn-dramatic" style="background:#27ae60; width: 85%;" onclick="yes()">YES! 💖</button>
             <button class="btn-dramatic no-btn" id="no-btn" onmouseover="moveNo()">No</button>
@@ -95,28 +111,27 @@
     </div>
 
     <div id="screen5" class="container hidden">
-        <img src="dudu bubu love.jpeg" style="width: 150px; margin-bottom: 10px;">
+        <img src="dudu bubu love.jpeg" style="width: 180px; border-radius: 20px;">
         <h1 style="color:var(--accent)">It's a Date! ❤️</h1>
         <div class="final-box fade-in">
-            <p>I miss you so much! Please <b>send me 2-3 of your latest photos</b> so I can stare at them? 😍</p>
+            <p>I miss you so much. Please <b>send me 2-3 latest photos</b> of you?</p>
             <hr style="border:0; border-top:1px solid #ffcbd1; margin: 15px 0;">
             <p style="font-weight: bold; font-size: 1.2rem;">And then... Video Call? 🎥</p>
-            <p>I want to hear your voice and see that smile!</p>
         </div>
-        <p style="margin-top: 15px; font-style: italic; color: #777;">I love you to the moon and back! 🐽</p>
+        <p style="margin-top: 15px; font-style: italic; color: #777;">I'm waiting... 🐽</p>
     </div>
 
     <script>
         const memories = [
-            { img: "IMG_0444.jpeg", bubu: "_.jpeg", txt: "It all started here... and look how far we've come. ✨" }, // Happy vibe
-            { img: "IMG_0461.jpeg", bubu: "_ (1).jpeg", txt: "I love irritating you just to see that cute face! 😂" }, // Irritating
-            { img: "IMG_0462.jpeg", bubu: "_ (2).jpeg", txt: "Sometimes you're so cute I just want to bite you! 🦷" }, // Biting/Kissing
-            { img: "IMG_0514.jpeg", bubu: "_ (3).jpeg", txt: "Whenever you feel sad, remember I'm always holding you. 🥺" }, // Sad/Hug
-            { img: "IMG_0541.jpeg", bubu: "dudu bubu love.jpeg", txt: "You are my home, my heart, and my everything." },
-            { img: "IMG_0697.jpeg", bubu: "Dudu Bubu GIF - Dudu Bubu - Discover & Share GIFs.gif", txt: "I'm ready for forever... are you? ❤️" }
+            { photo: "IMG_0444.jpeg", bubu: "_.jpeg", text: "Every story has a beginning, and ours is my favorite. ✨" },
+            { photo: "IMG_0461.jpeg", bubu: "_ (1).jpeg", text: "You might be irritating sometimes, but you're MY irritating Bubi! 😂" },
+            { photo: "IMG_0462.jpeg", bubu: "_ (2).jpeg", text: "I just want to bite those cheeks because you're so cute. 🦷" },
+            { photo: "IMG_0514.jpeg", bubu: "_ (3).jpeg", text: "I'll always be here to hold you tight when you're sad. 🥺" },
+            { photo: "IMG_0541.jpeg", bubu: "dudu bubu love.jpeg", text: "You are the best thing that ever happened to me." },
+            { photo: "IMG_0697.jpeg", bubu: "Dudu Bubu GIF - Dudu Bubu - Discover & Share GIFs.gif", text: "Now... are you ready for the final question?" }
         ];
 
-        let idx = 0;
+        let step = 0;
 
         function initExperience() {
             document.getElementById('player').innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" allow="autoplay"></iframe>`;
@@ -128,35 +143,33 @@
             if (document.getElementById('pass').value.toUpperCase() === "I LOVE YOU") {
                 document.getElementById('screen2').classList.add('hidden');
                 document.getElementById('screen3').classList.remove('hidden');
-                showMem();
+                updateContent();
             }
         }
 
-        function showMem() {
+        function updateContent() {
             const mImg = document.getElementById('mem-img');
-            const bImg = document.getElementById('bubu-act');
+            const bImg = document.getElementById('bubu-img');
             const desc = document.getElementById('mem-desc');
             
             mImg.style.opacity = 0;
-            bImg.style.opacity = 0;
-
+            
             setTimeout(() => {
-                mImg.src = memories[idx].img;
-                bImg.src = memories[idx].bubu;
-                desc.innerText = memories[idx].txt;
+                mImg.src = memories[step].photo;
+                bImg.src = memories[step].bubu;
+                desc.innerText = memories[step].text;
                 mImg.style.opacity = 1;
-                bImg.style.opacity = 1;
                 
-                if(idx === memories.length - 1) {
-                    document.getElementById('next-btn').innerText = "The Final Question... ❤️";
+                if(step === memories.length - 1) {
+                    document.getElementById('next-btn').innerText = "Ask Me... ❤️";
                 }
-            }, 400);
+            }, 300);
         }
 
         function nextMem() {
-            idx++;
-            if (idx < memories.length) {
-                showMem();
+            step++;
+            if (step < memories.length) {
+                updateContent();
             } else {
                 document.getElementById('screen3').classList.add('hidden');
                 document.getElementById('screen4').classList.remove('hidden');
