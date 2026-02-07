@@ -7,69 +7,31 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root { --accent: #ff4d6d; --bg: #fff0f3; }
-        
         body { 
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
             font-family: 'Georgia', serif; overflow: hidden;
             background: radial-gradient(circle, #fff0f3 0%, #ffcbd1 100%);
         }
-
         .hidden { display: none !important; }
-
         .container { 
             text-align: center; max-width: 450px; width: 90%; padding: 20px; 
             background: rgba(255, 255, 255, 0.98); border-radius: 30px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.15); border: 2px solid white;
-            max-height: 95vh; overflow-y: auto;
+            max-height: 95vh; overflow-y: auto; position: relative;
         }
-
-        /* Image Display Area */
-        .display-area {
-            display: flex; flex-direction: column; align-items: center;
-        }
-
-        .main-photo {
-            width: 100%; border-radius: 20px; border: 5px solid white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: opacity 0.8s ease-in-out;
-        }
-
-        .bubu-container {
-            width: 160px; height: 160px; margin-top: -50px; 
-            z-index: 5; background: white; border-radius: 50%;
-            border: 4px solid var(--accent); padding: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            animation: pulse 2s infinite;
-        }
-
-        .bubu-container img {
-            width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .description { 
-            margin: 15px 0; font-size: 1.2rem; color: #444; 
-            min-height: 70px; line-height: 1.5; font-style: italic;
-        }
-
+        /* Layout: Photo on top, BIG Bubu on bottom */
+        .photo-box { width: 100%; border-radius: 15px; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 10px; }
+        .bubu-big { width: 85%; border-radius: 20px; border: 4px solid var(--accent); background: white; transition: transform 0.3s; }
+        
+        .description { margin: 15px 0; font-size: 1.15rem; color: #444; font-style: italic; min-height: 50px; }
         .btn-dramatic {
-            background: var(--accent); color: white; border: none;
-            padding: 16px 45px; border-radius: 50px; font-size: 1.1rem;
-            cursor: pointer; font-weight: bold; transition: 0.4s;
-            box-shadow: 0 8px 15px rgba(255,77,109,0.3);
+            background: var(--accent); color: white; border: none; padding: 16px 45px;
+            border-radius: 50px; font-size: 1.1rem; cursor: pointer; font-weight: bold;
         }
-
-        .no-btn { background: #95a5a6; position: absolute; font-size: 0.8rem; }
-
-        .final-box { padding: 20px; border: 2px dashed var(--accent); border-radius: 20px; background: #fffafb; }
-
-        .fade-in { animation: fadeIn 1.5s forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .no-btn { background: #95a5a6; position: absolute; }
+        
+        /* Debug message styling */
+        .error-hint { font-size: 0.7rem; color: red; margin-top: 5px; display: none; }
     </style>
 </head>
 <body>
@@ -77,61 +39,59 @@
     <div id="player" style="position: absolute; left: -9999px;"></div>
 
     <div id="screen1" class="container">
-        <img src="dudu bubu love.jpeg" style="width: 150px; border-radius: 20px;">
+        <img src="dudu bubu love.jpeg" class="bubu-big" onerror="showErr(this)">
         <h1 style="color:var(--accent)">Hi My Bubi ❤️</h1>
-        <p>I’ve combined our memories with Dudu & Bubu.</p>
         <button class="btn-dramatic" onclick="initExperience()">Open Our Story 🎵</button>
     </div>
 
     <div id="screen2" class="container hidden">
         <h2 style="color:var(--accent)">Unlock with Love</h2>
         <input type="text" id="pass" placeholder="Type 'I LOVE YOU'" 
-               style="width: 80%; padding: 15px; border: 2px solid var(--accent); border-radius: 20px; text-align: center; font-size: 1.2rem;" 
+               style="width: 80%; padding: 15px; border: 2px solid var(--accent); border-radius: 20px; text-align: center;" 
                oninput="checkPass()">
     </div>
 
     <div id="screen3" class="container hidden">
-        <div class="display-area">
-            <img id="mem-img" class="main-photo" src="IMG_0444.jpeg">
-            <div class="bubu-container">
-                <img id="bubu-img" src="_.jpeg">
-            </div>
-        </div>
+        <img id="mem-img" class="photo-box" src="">
+        <img id="bubu-img" class="bubu-big" src="" onerror="showErr(this)">
+        <div id="err-msg" class="error-hint">File not found. Check if name matches exactly!</div>
         <p class="description" id="mem-desc"></p>
-        <button class="btn-dramatic" id="next-btn" onclick="nextMem()">Continue... →</button>
+        <button class="btn-dramatic" id="next-btn" onclick="nextMem()">Next →</button>
     </div>
 
     <div id="screen4" class="container hidden">
-        <img src="Dudu Bubu GIF - Dudu Bubu - Discover & Share GIFs.gif" style="width: 200px; border-radius: 20px;">
-        <h2 style="color: #ff3355; font-size: 2rem; margin-top: 15px;">Will you be my Dalenvine? 🌹</h2>
-        <div style="height: 120px; position: relative; margin-top: 30px;">
+        <img src="Dudu Bubu GIF - Dudu Bubu - Discover & Share GIFs.gif" class="bubu-big" onerror="showErr(this)">
+        <h2 style="color: #ff3355; font-size: 1.8rem; margin-top: 15px;">Will you be my Dalenvine? 🌹</h2>
+        <div style="height: 100px; position: relative; margin-top: 20px;">
             <button class="btn-dramatic" style="background:#27ae60; width: 85%;" onclick="yes()">YES! 💖</button>
             <button class="btn-dramatic no-btn" id="no-btn" onmouseover="moveNo()">No</button>
         </div>
     </div>
 
     <div id="screen5" class="container hidden">
-        <img src="dudu bubu love.jpeg" style="width: 180px; border-radius: 20px;">
+        <img src="dudu bubu love.jpeg" class="bubu-big">
         <h1 style="color:var(--accent)">It's a Date! ❤️</h1>
-        <div class="final-box fade-in">
-            <p>I miss you so much. Please <b>send me 2-3 latest photos</b> of you?</p>
-            <hr style="border:0; border-top:1px solid #ffcbd1; margin: 15px 0;">
-            <p style="font-weight: bold; font-size: 1.2rem;">And then... Video Call? 🎥</p>
-        </div>
-        <p style="margin-top: 15px; font-style: italic; color: #777;">I'm waiting... 🐽</p>
+        <p>Send me those <b>photos</b> and let's <b>Video Call</b>! 🎥</p>
     </div>
 
     <script>
+        // TRIPLE CHECK THESE FILENAMES MATCH YOUR UPLOADED FILES EXACTLY
         const memories = [
-            { photo: "IMG_0444.jpeg", bubu: "_.jpeg", text: "Every story has a beginning, and ours is my favorite. ✨" },
-            { photo: "IMG_0461.jpeg", bubu: "_ (1).jpeg", text: "You might be irritating sometimes, but you're MY irritating Bubi! 😂" },
-            { photo: "IMG_0462.jpeg", bubu: "_ (2).jpeg", text: "I just want to bite those cheeks because you're so cute. 🦷" },
-            { photo: "IMG_0514.jpeg", bubu: "_ (3).jpeg", text: "I'll always be here to hold you tight when you're sad. 🥺" },
-            { photo: "IMG_0541.jpeg", bubu: "dudu bubu love.jpeg", text: "You are the best thing that ever happened to me." },
-            { photo: "IMG_0697.jpeg", bubu: "Dudu Bubu GIF - Dudu Bubu - Discover & Share GIFs.gif", text: "Now... are you ready for the final question?" }
+            { photo: "IMG_0444.jpeg", bubu: "_.jpeg", text: "Every story has a beginning... ✨" },
+            { photo: "IMG_0461.jpeg", bubu: "_ (1).jpeg", text: "You're my favorite person to irritate! 😂" },
+            { photo: "IMG_0462.jpeg", bubu: "_ (2).jpeg", text: "I just want to bite you! 🦷" },
+            { photo: "IMG_0514.jpeg", bubu: "_ (3).jpeg", text: "I'll always be here to hold you. 🥺" },
+            { photo: "IMG_0541.jpeg", bubu: "dudu bubu love.jpeg", text: "You are my heart and home." },
+            { photo: "IMG_0697.jpeg", bubu: "Dudu Bubu GIF - Dudu Bubu - Discover & Share GIFs.gif", text: "Now for the question..." }
         ];
 
         let step = 0;
+
+        function showErr(imgElement) {
+            console.error("Failed to load: " + imgElement.src);
+            document.getElementById('err-msg').style.display = 'block';
+            document.getElementById('err-msg').innerText = "Missing file: " + imgElement.src.split('/').pop();
+        }
 
         function initExperience() {
             document.getElementById('player').innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" allow="autoplay"></iframe>`;
@@ -148,29 +108,17 @@
         }
 
         function updateContent() {
-            const mImg = document.getElementById('mem-img');
-            const bImg = document.getElementById('bubu-img');
-            const desc = document.getElementById('mem-desc');
-            
-            mImg.style.opacity = 0;
-            
-            setTimeout(() => {
-                mImg.src = memories[step].photo;
-                bImg.src = memories[step].bubu;
-                desc.innerText = memories[step].text;
-                mImg.style.opacity = 1;
-                
-                if(step === memories.length - 1) {
-                    document.getElementById('next-btn').innerText = "Ask Me... ❤️";
-                }
-            }, 300);
+            document.getElementById('err-msg').style.display = 'none';
+            document.getElementById('mem-img').src = memories[step].photo;
+            document.getElementById('bubu-img').src = memories[step].bubu;
+            document.getElementById('mem-desc').innerText = memories[step].text;
+            if(step === memories.length - 1) document.getElementById('next-btn').innerText = "Ask Me... ❤️";
         }
 
         function nextMem() {
             step++;
-            if (step < memories.length) {
-                updateContent();
-            } else {
+            if (step < memories.length) { updateContent(); } 
+            else {
                 document.getElementById('screen3').classList.add('hidden');
                 document.getElementById('screen4').classList.remove('hidden');
             }
@@ -185,7 +133,7 @@
         function yes() {
             document.getElementById('screen4').classList.add('hidden');
             document.getElementById('screen5').classList.remove('hidden');
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff'] });
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         }
     </script>
 </body>
