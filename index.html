@@ -6,128 +6,178 @@
     <title>For My Forever ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --accent: #ff4d6d; }
+        :root { --accent: #ff4d6d; --romantic-pink: #fff0f3; }
+        
         body { 
             margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
             font-family: 'Georgia', serif; overflow: hidden;
             background: radial-gradient(circle, #fff0f3 0%, #ffcbd1 100%);
         }
+
         .hidden { display: none !important; }
+
         .container { 
-            text-align: center; max-width: 400px; width: 85%; padding: 30px; 
-            background: rgba(255, 255, 255, 0.98); border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid white;
+            text-align: center; max-width: 450px; width: 90%; padding: 30px; 
+            background: rgba(255, 255, 255, 0.95); border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            border: 2px solid white;
+            z-index: 10;
         }
-        .image-frame { border-radius: 20px; border: 6px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); overflow: hidden; }
-        .image-frame img { width: 100%; display: block; transition: opacity 1s; }
-        .description { margin: 20px 0; font-size: 1.1rem; color: #444; min-height: 70px; line-height: 1.5; font-style: italic; }
-        .btn-romantic {
-            background: var(--accent); color: white; border: none; padding: 15px 35px;
-            border-radius: 50px; font-size: 1.1rem; cursor: pointer; font-weight: bold;
-            box-shadow: 0 8px 15px rgba(255,77,109,0.3); transition: 0.3s;
+
+        .image-frame {
+            position: relative; overflow: hidden; border-radius: 20px;
+            border: 10px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        .btn-romantic:active { transform: scale(0.95); }
-        .no-btn { background: #95a5a6; position: absolute; font-size: 0.8rem; }
-        .final-box { padding: 20px; border: 2px dashed var(--accent); border-radius: 20px; background: #fffafb; margin-top: 15px; }
-        .fade-in { animation: fadeIn 1.5s forwards; }
+        .image-frame img { width: 100%; display: block; transition: opacity 1.2s ease-in-out; }
+
+        .description { 
+            margin: 30px 0; font-size: 1.25rem; color: #4a4a4a; 
+            min-height: 90px; line-height: 1.7; font-style: italic;
+            transition: opacity 1s ease;
+        }
+
+        .btn-dramatic {
+            background: var(--accent); color: white; border: none;
+            padding: 18px 45px; border-radius: 50px; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.5s; box-shadow: 0 10px 20px rgba(255,77,109,0.3);
+            letter-spacing: 1px; font-weight: bold;
+        }
+        .btn-dramatic:hover { transform: scale(1.05) translateY(-2px); background: #ff3355; }
+
+        .no-btn { background: #95a5a6; position: absolute; }
+
+        .final-request-box {
+            padding: 25px; border-radius: 20px; background: #fff0f3;
+            border: 2px dashed var(--accent); margin-top: 25px;
+        }
+
+        .fade-in { animation: fadeIn 2s forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <audio id="myAudio" loop>
-        <source src="https://cdn.pixabay.com/audio/2022/02/18/audio_d0a13d6935.mp3" type="audio/mpeg">
-        </audio>
+    <div id="music-container" style="position: absolute; left: -9999px;"></div>
 
-    <div id="step1" class="container">
-        <h1 style="color:var(--accent)">A Little Surprise ❤️</h1>
-        <p>Please turn your volume UP 🔊</p>
-        <button class="btn-romantic" onclick="startAll()">Enter Our World ✨</button>
-    </div>
-
-    <div id="step2" class="container hidden">
-        <h2 style="color:var(--accent)">Unlock</h2>
-        <input type="text" id="pass" placeholder="Type 'I LOVE YOU'" 
-               style="width: 80%; padding: 12px; border: 2px solid var(--accent); border-radius: 15px; text-align: center;" 
+    <div id="lock-screen" class="container">
+        <h1 style="color:var(--accent); font-size: 2.5rem;">🔒 Unlock My Heart</h1>
+        <p style="font-size: 1.1rem; margin-bottom: 30px;">Our journey begins with our favorite phrase...</p>
+        <input type="text" id="pass-input" placeholder="Type 'I LOVE YOU'..." 
+               style="width: 85%; padding: 18px; border: 2px solid var(--accent); border-radius: 20px; text-align: center; font-size: 1.2rem;" 
                oninput="checkPass()">
+        <p style="font-size: 0.8rem; color: #888; margin-top: 15px;">(Type the password to start the music ✨)</p>
     </div>
 
-    <div id="step3" class="container hidden">
-        <div class="image-frame"><img id="main-img" src="IMG_0444.jpeg"></div>
-        <p class="description" id="main-desc">It started with a look... and then I knew my world had changed.</p>
-        <button class="btn-romantic" onclick="nextMem()">Next Memory →</button>
+    <div id="story-screen" class="container hidden">
+        <div class="image-frame">
+            <img id="display-img" src="IMG_0444.jpeg">
+        </div>
+        <div class="description" id="img-desc">I looked at this photo and realized... my world was changing for the better.</div>
+        <button class="btn-dramatic" id="next-btn" onclick="nextStep()">Continue the story... ✨</button>
     </div>
 
-    <div id="step4" class="container hidden">
-        <h2 style="color:var(--accent)">Will you be my Dalenvine? 🌹</h2>
-        <div style="height: 120px; position: relative; margin-top: 30px;">
-            <button class="btn-romantic" style="background:#27ae60; width: 80%;" onclick="celebrate()">YES! 💖</button>
-            <button class="btn-romantic no-btn" id="no-btn" onmouseover="moveNo()" onclick="moveNo()">No</button>
+    <div id="ask-screen" class="container hidden">
+        <h1 class="fade-in" style="color: var(--accent); font-size: 1.5rem;">My Heart, My Soul...</h1>
+        <p class="fade-in" style="font-size: 1.3rem;">Every memory we've shared led me to this moment.</p>
+        <h2 class="fade-in" style="color: #ff3355; font-size: 2.2rem; margin-bottom: 20px;">Will you be my Dalenvine? 🌹</h2>
+        
+        <div style="height: 150px; position: relative; margin-top: 40px;">
+            <button class="btn-dramatic" style="font-size: 1.6rem; background: #27ae60; width: 85%;" onclick="yes()">YES, FOREVER! 💖</button>
+            <button class="btn-dramatic no-btn" id="no-btn" onmouseover="moveNo()">No</button>
         </div>
     </div>
 
-    <div id="step5" class="container hidden">
-        <h1 style="color:var(--accent)">I'm Yours! ❤️</h1>
-        <div class="final-box fade-in">
-            <p>I'm missing you! Please send me <b>2-3 latest photos</b> of you right now.</p>
-            <hr style="border:0; border-top:1px solid #ffcbd1;">
-            <p><b>Video Call?</b> I want to see that smile! 🎥</p>
+    <div id="final-screen" class="container hidden">
+        <h1 style="color: var(--accent); font-size: 2.5rem;">I'm Yours! ❤️</h1>
+        <p style="font-size: 1.2rem;">You've made me the happiest person today.</p>
+        
+        <div class="final-request-box fade-in">
+            <h3 style="margin-top: 0;">A Little Surprise? 🥺</h3>
+            <p>I want to see your beautiful smile right now. Can you <b>send me 2-3 of your favorite photos</b> from today?</p>
+            <hr style="border: 0; border-top: 1px solid var(--accent); opacity: 0.3; margin: 20px 0;">
+            <p style="font-weight: bold; font-size: 1.3rem;">And then... can we have a Video Call? 🎥</p>
+            <p>I'm waiting to celebrate this with you!</p>
         </div>
-        <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">Check your messages! 🐽✨</p>
     </div>
 
     <script>
-        const audio = document.getElementById("myAudio");
-        const memories = [
-            { img: "IMG_0444.jpeg", txt: "Every time I look at this, I see our beautiful future. ✨" },
-            { img: "IMG_0461.jpeg", txt: "You make everything feel beautiful just by being you." },
-            { img: "IMG_0462.jpeg", txt: "That smile? It's the reason I believe in magic. ❤️" },
-            { img: "IMG_0514.jpeg", txt: "Look at us... we fit together perfectly." },
-            { img: "IMG_0541.jpeg", txt: "I promise to be your safest place, always." },
-            { img: "IMG_0697.jpeg", txt: "Now, I have one very important question..." }
+        // Use an array for your images and descriptions
+        const story = [
+            { img: "IMG_0444.jpeg", text: "Every time I look at this, I see a future I never knew I wanted until I met you. ✨" },
+            { img: "IMG_0461.jpeg", text: "You have this way of making everything feel beautiful, just by being in it." },
+            { img: "IMG_0462.jpeg", text: "That smile in this photo? It's the reason I believe in magic. ❤️" },
+            { img: "IMG_0514.jpeg", text: "I looked at this and thought: 'This is it. This is the person I want by my side.'" },
+            { img: "IMG_0541.jpeg", text: "Through every laugh and every tear, I promise to be your safest place." },
+            { img: "IMG_0697.jpeg", text: "Every moment has led to this... and I have one very special question for you." }
         ];
-        let idx = 0;
 
-        function startAll() {
-            audio.play().catch(e => console.log("Audio blocked"));
-            document.getElementById('step1').classList.add('hidden');
-            document.getElementById('step2').classList.remove('hidden');
-        }
+        let currentStep = 0;
+        let musicStarted = false;
 
-        function checkPass() {
-            if (document.getElementById('pass').value.toUpperCase() === "I LOVE YOU") {
-                document.getElementById('step2').classList.add('hidden');
-                document.getElementById('step3').classList.remove('hidden');
+        function startMusic() {
+            if (!musicStarted) {
+                // Creates the YouTube iframe after user interaction to bypass browser blocks
+                const container = document.getElementById('music-container');
+                container.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HTFpTVaHvjw?autoplay=1&loop=1&playlist=HTFpTVaHvjw" allow="autoplay"></iframe>`;
+                musicStarted = true;
             }
         }
 
-        function nextMem() {
-            idx++;
-            if (idx < memories.length) {
-                const img = document.getElementById('main-img');
-                const desc = document.getElementById('main-desc');
-                img.style.opacity = 0;
+        function checkPass() {
+            const val = document.getElementById('pass-input').value.toUpperCase();
+            if (val === "I LOVE YOU") {
+                startMusic(); // Triggers music on the interaction of typing the full password
                 setTimeout(() => {
-                    img.src = memories[idx].img;
-                    desc.innerText = memories[idx].txt;
-                    img.style.opacity = 1;
-                }, 500);
+                    document.getElementById('lock-screen').classList.add('hidden');
+                    document.getElementById('story-screen').classList.remove('hidden');
+                    document.getElementById('story-screen').classList.add('fade-in');
+                }, 400);
+            }
+        }
+
+        function nextStep() {
+            currentStep++;
+            const img = document.getElementById('display-img');
+            const desc = document.getElementById('img-desc');
+            const nextBtn = document.getElementById('next-btn');
+
+            if (currentStep < story.length) {
+                img.style.opacity = '0';
+                desc.style.opacity = '0';
+                
+                setTimeout(() => {
+                    img.src = story[currentStep].img;
+                    desc.innerText = story[currentStep].text;
+                    img.style.opacity = '1';
+                    desc.style.opacity = '1';
+                    
+                    if (currentStep === story.length - 1) {
+                        nextBtn.innerText = "The Final Question... ❤️";
+                    }
+                }, 1000);
             } else {
-                document.getElementById('step3').classList.add('hidden');
-                document.getElementById('step4').classList.remove('hidden');
+                document.getElementById('story-screen').classList.add('hidden');
+                document.getElementById('ask-screen').classList.remove('hidden');
             }
         }
 
         function moveNo() {
             const btn = document.getElementById('no-btn');
-            btn.style.left = Math.random() * 60 + '%';
-            btn.style.top = Math.random() * 60 + '%';
+            btn.style.left = Math.random() * 70 + '%';
+            btn.style.top = Math.random() * 70 + '%';
+            btn.innerText = "Error 404! 😂";
         }
 
-        function celebrate() {
-            document.getElementById('step4').classList.add('hidden');
-            document.getElementById('step5').classList.remove('hidden');
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff'] });
+        function yes() {
+            document.getElementById('ask-screen').classList.add('hidden');
+            document.getElementById('final-screen').classList.remove('hidden');
+            
+            const end = Date.now() + (10 * 1000);
+            (function frame() {
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
         }
     </script>
 </body>
